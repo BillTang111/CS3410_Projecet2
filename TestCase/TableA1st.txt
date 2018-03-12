@@ -1,0 +1,76 @@
+ADDIU $1, $0, 1
+NOP
+NOP
+NOP
+NOP
+ADDIU $2, $0, 2
+NOP
+NOP
+NOP
+NOP
+ANDI $3, $1, 3
+NOP
+NOP
+NOP
+NOP
+ORI $4, $1, 3
+NOP
+NOP
+NOP
+NOP
+XORI $5, $1, 3
+NOP
+NOP
+NOP
+NOP
+ADDU $6, $1, $2   #$6=3
+NOP
+NOP
+NOP
+NOP 
+SUBU $7, $0, $1   #$7=-1
+NOP
+NOP
+NOP
+NOP
+AND $8, $6, $7   #$6=3, $7=-1
+NOP
+NOP
+NOP
+NOP
+OR $9, $6, $7    #$6=3, $7=-1
+NOP
+NOP
+NOP
+NOP
+XOR $10, $6, $7  #$6=3, $7=-1
+NOP
+NOP
+NOP
+NOP
+NOR $11, $6, $7  #$6=3, $7=-1
+NOP
+NOP
+NOP
+NOP
+SLTI $12, $6, 2
+NOP
+NOP
+NOP
+NOP
+SLTIU $13, $6, 2
+NOP
+NOP
+NOP
+NOP
+SLT $14, $6, $7
+NOP
+NOP
+NOP
+NOP
+SLTU $15, $6, $7
+NOP
+NOP
+NOP
+NOP
+ 
