@@ -1,0 +1,12 @@
+ADDIU $8,$0,0    #f1=0, F(0)
+ADDIU $9,$0,1    #f2=1, F(1)
+ADDU $10,$8,$9   #fi=f1+f2, F(2)
+MOVZ $8,$9,$0     #f1=f2
+MOVZ $9,$10,$0    #f2=fi
+ADDU $10,$8,$9   #fi=f1+f2, F(3)
+MOVZ $8,$9,$0     #f1=f2
+MOVZ $9,$10,$0    #f2=fi
+ADDU $10,$8,$9   #fi=f1+f2, F(4)
+MOVZ $8,$9,$0     #f1=f2
+MOVZ $9,$10,$0    #f2=fi
+MOVZ $2,$9,$0     #return f2, F(4)
