@@ -1,0 +1,231 @@
+commit 5e716859e49d545d6138673ba442cd3f2232c865
+Merge: 1633e95 d628504
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Mon Mar 12 19:02:23 2018 -0400
+
+    Merge branch 'master' of https://github.com/BillTang111/CS3410_Projecet2
+
+commit 1633e95ec04dc21c80d83748f129d372f29af432
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Mon Mar 12 19:01:57 2018 -0400
+
+    add design doc
+
+commit d6285046045a5a114c13df2a44322815876e4e97
+Author: BillTang111 <bt294@cornell.edu>
+Date:   Mon Mar 12 18:50:43 2018 -0400
+
+   fib forwarding correct
+
+commit fc3674615839024e828763d90a77545c94219fa4
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Mon Mar 12 16:29:42 2018 -0400
+
+    add test case
+
+commit 40d4909ad269e7d1c312b2cdb78e00bbedbbbd4a
+Author: BillTang111 <bt294@cornell.edu>
+Date:   Mon Mar 12 16:28:29 2018 -0400
+
+    alucontrol update
+ 
+commit d6285046045a5a114c13df2a44322815876e4e97
+Author: BillTang111 <bt294@cornell.edu>
+Date:   Mon Mar 12 18:50:43 2018 -0400
+
+   fib forwarding correct
+
+commit fc3674615839024e828763d90a77545c94219fa4
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Mon Mar 12 16:29:42 2018 -0400
+
+    add test case
+
+commit 40d4909ad269e7d1c312b2cdb78e00bbedbbbd4a
+Author: BillTang111 <bt294@cornell.edu>
+Date:   Mon Mar 12 16:28:29 2018 -0400
+
+    alucontrol update
+
+commit fc83426405842c54a9d03ef59a58b963e80b2081
+Merge: b539b4f 61e9072
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Mon Mar 12 15:59:22 2018 -0400
+
+    Merge branch 'master' of https://github.com/BillTang111/CS3410_Projecet2
+
+commit b539b4f92c0ee27c75bff4f705871962b60f8ca7
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Mon Mar 12 15:59:19 2018 -0400
+
+    something change
+
+commit 61e9072c029e6e7caa6effa781d56f7d581f08ac
+Author: BillTang111 <bt294@cornell.edu>
+Date:   Mon Mar 12 15:57:45 2018 -0400
+
+    testupdate
+
+commit 0c70f0810566330575db2d91b2da8e205bcd4281
+Merge: 08296e4 1663916
+Author: BillTang111 <bt294@cornell.edu>
+Date:   Mon Mar 12 15:38:16 2018 -0400
+
+    Merge branch 'master' of https://github.com/BillTang111/CS3410_Projecet2
+
+commit 08296e4d2c4de8880edb94aadc4b4d7da7251a6d
+Author: BillTang111 <bt294@cornell.edu>
+Date:   Mon Mar 12 15:38:15 2018 -0400
+
+    testupdate
+
+commit 1663916f4b38fe692205ee86f2b877425e182ad0
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Mon Mar 12 15:35:02 2018 -0400
+
+    Forwarding to all calculation units
+
+commit effb4c5e73f59a528d48a8471f0d36a35b3e5c9d
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Mon Mar 12 15:24:15 2018 -0400
+
+    fix forwarding bug
+
+commit b6b8f88917ec7e75f18adf214258b36f9d98c613
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Mon Mar 12 15:21:33 2018 -0400
+
+    connect
+
+commit 3c132d8fcd82751f455a9dd9100dbda369f19ea6
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Mon Mar 12 15:08:37 2018 -0400
+
+    add Fibonacci
+
+commit 0e9a9570abdd1974b071073a35d4aeb23972b5e4
+Author: BillTang111 <bt294@cornell.edu>
+Date:   Mon Mar 12 15:08:21 2018 -0400
+
+    debug wire not co
+
+commit 6c5ce0311204af7e4441cebe85e11b91e0a20d9c
+Merge: c65382e a1a305e
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Mon Mar 12 14:44:14 2018 -0400
+
+    Merge branch 'master' of https://github.com/BillTang111/CS3410_Projecet2
+
+commit c65382e03081f03bc15a936d00cf09e7eb3d2f26
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Mon Mar 12 14:44:12 2018 -0400
+
+    add probe
+
+commit a1a305e16cd27f90630c0871f132c5b55691f7c5
+Author: BillTang111 <bt294@cornell.edu>
+Date:   Mon Mar 12 14:43:28 2018 -0400
+
+    add test1
+    
+    simplisest test
+
+commit 9f9a5ad3e278ef7ff05d76fb02226dd82d8efd1a
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Mon Mar 12 12:56:01 2018 -0400
+
+    Add Rule out B instruction component
+
+commit 4643c92f0672542d058b3edc1a532edf172fe9d9
+Author: BillTang111 <bt294@cornell.edu>
+Date:   Mon Mar 12 12:51:50 2018 -0400
+
+    add forwarding to MIPS32
+
+commit aca0754857e6fe53323a4880049ea1d9e8c21a00
+Author: BillTang111 <bt294@cornell.edu>
+Date:   Mon Mar 12 12:17:56 2018 -0400
+
+    very small change
+
+commit be255741d77cfce65e14dbf3261dda1e1f884455
+Author: BillTang111 <bt294@cornell.edu>
+Date:   Mon Mar 12 12:16:04 2018 -0400
+
+    forward added
+
+commit 3cef66247a40c0ad79bcef5e67e4420935dc13f6
+Author: BillTang111 <bt294@cornell.edu>
+Date:   Mon Mar 12 12:09:27 2018 -0400
+
+    forwarding unit
+
+commit 87a20ca79cd6c2e904ab5d22cc2b8ced22979a38
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Sun Mar 11 18:25:41 2018 -0400
+
+    try to add NOP implementation
+
+commit 1046653957c10faa3c0860b5e45cd22b97284429
+Author: BillTang111 <bt294@cornell.edu>
+Date:   Sun Mar 11 17:00:48 2018 -0400
+
+    change ALUcontrol
+    
+    SLT SLTU
+
+commit 60d6b666242ec1a03e629bdaaf9513ca46b7b8cc
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Sun Mar 11 16:54:08 2018 -0400
+
+    debug multiplexer
+
+commit 74dc695f4ff995accc4305593af6fe372a399e03
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Sat Mar 10 01:03:27 2018 -0500
+
+    try add SLT
+
+commit 499451d9b458623d138c27669c009e8d21089064
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Sat Mar 10 00:24:09 2018 -0500
+
+    Implement ALUControl Decode
+
+commit d7b27a45e65aa60c7e9181cc251910a0df82140a
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Fri Mar 9 23:39:30 2018 -0500
+
+    Implement MainControl, LUI, MOVZ, MOVN
+
+commit ac22d1b6f1f2fcd6fc3a6a8b6c8dab30867d38f7
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Mon Mar 5 15:31:51 2018 -0500
+
+    Implement main frame details
+
+commit 98d5308a00fe12f835fcab1f49fad059424cf5ee
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Mon Mar 5 14:26:04 2018 -0500
+
+    Main Frame Circuit setup
+
+commit 3811653b0cef6eb5d53432751a50248f54005298
+Author: BillTang111 <bt294@cornell.edu>
+Date:   Mon Mar 5 13:02:30 2018 -0500
+
+    ititial build
+
+commit 7925cf971d5ac28dac016907aebe9a7db0741d9a
+Author: BillTang111 <bt294@cornell.edu>
+Date:   Sun Mar 4 14:46:36 2018 -0500
+
+    getting started
+    
+    create MIPS32 file
+
+commit 1069367176141d29c65d484d55cbcd58fa07695e
+Author: Bill <bt294@cornell.edu>
+Date:   Sun Feb 25 10:10:14 2018 -0500
+
+    Initial commit
