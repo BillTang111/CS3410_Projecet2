@@ -1,0 +1,57 @@
+#Main
+	ADDIU $a0, $zero, 3		#n = 3 (n in a0)
+	ADDIU $sp, $sp, 1000
+	JAL fib
+	NOP
+	J exit
+
+fib:
+#prologue:
+	ADDIU $sp, $sp, -24
+	SW $ra, 20($sp) 			# save $ra
+	SW $fp, 16($sp)			# save old $fp
+	ADDIU $fp, $sp, 20  		# set new frame ptr
+
+#Body
+	#initialization
+	ADDIU $t5, $a0, 1			# n+1 (in t5) for loop condition
+	ADDIU $t0, $zero, 2		#I = 2 ("i" in t0)
+	ADDIU $t1, $zero, 0		#f1 = 0(f1 in t1)
+	ADDIU $t2, $zero, 1		#f2 = 1 (f2 in t2)
+
+	# if (n==0)
+	BNE $a0, $zero, case2
+	NOP
+	MOVZ $v0, $a0, $0    
+	J epilogue				#return 0
+	NOP
+
+	# if (n==1)
+case2: 
+	BNE $a0, $t2, loop
+	NOP
+	MOVZ $v0, $a0, $0   
+	J epilogue				#return 1	
+	NOP
+
+# loop
+loop:
+	BEQ $t0, $t5, end		#if I == (n+1), end the loop
+	NOP
+	ADDU $t3,$t1,$t2  		#fi=f1+f2 (fi in t3)
+	MOVZ $t1, $t2, $0 		#move f2 to f1
+	MOVZ $t2, $t3, $0 		#move fi to f2
+	ADDIU $t0, $t0, 1		#increment i by 1
+	J loop
+	NOP
+
+end:
+	MOVZ $v0, $t3, $0		#move fi into result
+
+epilogue:
+	LW $fp, 16($sp)   		# restore fp
+	LW $ra, 20($sp)		# restore ra
+	ADDIU $sp, $sp, 24		#dealloc frame
+	JR $ra
+	NOP
+exit:
