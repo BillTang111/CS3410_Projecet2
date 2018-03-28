@@ -676,7 +676,6 @@ end TCL_Generic;
     <wire from="(90,140)" to="(90,150)"/>
     <wire from="(1300,790)" to="(1680,790)"/>
     <wire from="(1850,510)" to="(2030,510)"/>
-    <wire from="(1610,380)" to="(1610,390)"/>
     <wire from="(740,720)" to="(780,720)"/>
     <wire from="(750,570)" to="(750,790)"/>
     <wire from="(890,810)" to="(890,900)"/>
@@ -722,6 +721,7 @@ end TCL_Generic;
     <wire from="(1060,140)" to="(1700,140)"/>
     <wire from="(1250,210)" to="(1250,340)"/>
     <wire from="(2410,470)" to="(2420,470)"/>
+    <wire from="(1610,350)" to="(1610,360)"/>
     <wire from="(890,110)" to="(890,140)"/>
     <wire from="(2430,850)" to="(2430,900)"/>
     <wire from="(680,210)" to="(790,210)"/>
@@ -902,6 +902,7 @@ end TCL_Generic;
     <wire from="(2280,530)" to="(2300,530)"/>
     <wire from="(640,470)" to="(680,470)"/>
     <wire from="(790,210)" to="(790,240)"/>
+    <wire from="(1610,390)" to="(1610,400)"/>
     <wire from="(940,700)" to="(940,1110)"/>
     <wire from="(280,50)" to="(280,130)"/>
     <wire from="(2230,970)" to="(2240,970)"/>
@@ -1079,10 +1080,6 @@ end TCL_Generic;
       <a name="bit30" val="1"/>
       <a name="bit31" val="1"/>
     </comp>
-    <comp lib="0" loc="(1610,390)" name="Tunnel">
-      <a name="facing" val="north"/>
-      <a name="label" val="Use_RAM"/>
-    </comp>
     <comp lib="0" loc="(400,290)" name="Tunnel">
       <a name="facing" val="east"/>
       <a name="label" val="RegWrite"/>
@@ -1139,6 +1136,10 @@ end TCL_Generic;
     </comp>
     <comp lib="0" loc="(1240,620)" name="Tunnel">
       <a name="label" val="Q"/>
+    </comp>
+    <comp lib="0" loc="(1610,400)" name="Tunnel">
+      <a name="facing" val="north"/>
+      <a name="label" val="Use_RAM"/>
     </comp>
     <comp lib="0" loc="(1240,920)" name="Tunnel">
       <a name="width" val="2"/>
@@ -1380,6 +1381,9 @@ end TCL_Generic;
     <comp lib="0" loc="(1030,1150)" name="Tunnel">
       <a name="label" val="Choose2"/>
     </comp>
+    <comp lib="1" loc="(1610,360)" name="NOT Gate">
+      <a name="facing" val="north"/>
+    </comp>
     <comp lib="0" loc="(680,1020)" name="Splitter">
       <a name="facing" val="west"/>
       <a name="appear" val="right"/>
@@ -1447,9 +1451,6 @@ end TCL_Generic;
     <comp lib="8" loc="(2268,63)" name="Text">
       <a name="text" val="MEM stage"/>
       <a name="font" val="Skia bold 40"/>
-    </comp>
-    <comp lib="1" loc="(1610,350)" name="NOT Gate">
-      <a name="facing" val="north"/>
     </comp>
     <comp lib="0" loc="(970,200)" name="Tunnel">
       <a name="facing" val="east"/>
