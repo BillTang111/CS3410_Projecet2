@@ -1,0 +1,39 @@
+
+
+# Test Store
+# SW
+ADDIU $14, $14, 234
+ADDIU $8, $8, 2
+NOP
+SW $14, 10($8)
+SW $14, 3($8)
+
+# SB
+SW $14, 10($31)
+SW $14, 3($31)
+
+
+# Test Load
+# LW
+LW $16, 10($14)
+LW $17, 3($14)
+
+# LB
+LB $14, 10($8)
+LB $30, 0($31)
+
+# LBU
+LBU $14, 3($8)
+LBU $15, 1($8)
+
+# Test Data Hazard
+# load_use 
+ADDIU $14, $14, 234
+ADDIU $8, $8, 2
+ADDIU $2, $2, 5
+SW $14, 10($8)
+NOP
+NOP
+LW $14, 10($8)
+SUBU $23, $14, $2
+SLL $5, $23, 1
