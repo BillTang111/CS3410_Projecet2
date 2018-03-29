@@ -2,32 +2,32 @@
 # Test J
 J point01
 nop
-ADDU $20, $1, $2 # should not be executed
+ADDIU $1, $0, 2 # should not be executed
 point01:
 
 J point02
-ADDU $21, $1, $2 # should be executed
+ADDIU $2, $0, 5 # should be executed
 point02:
 
 J point03
-ADDU $22, $1, $2 # should be executed
-SUBU $23, $22, $2 # should not be executed
+ADDIU $3, $0, 7 # should be executed
+ADDIU $4, $0, 3 # should not be executed
 point03:
 
 # Test JAL
 JAL point04
 nop
-ADDU $22, $1, $2 # should not be executed
+ADDIU $5, $0, 8 # should not be executed
 point04:
 
 JAL point05
-ADDU $20, $1, $2 # should be executed
+ADDIU $6, $0, 11 # should be executed
 point05:
 
 JAL point06
-ADDU $21, $1, $2 # should be executed
-SUBU $19, $22, $2 # should not be executed
-ADDU $20, $3, $2 # should not be executed
+ADDIU $7, $0, 13 # should be executed
+ADDIU $8, $0, 23 # should not be executed
+ADDIU $9, $0, 29 # should not be executed
 J point07
 NOP
 point06:
@@ -38,13 +38,13 @@ NOP
 point07:
 
 JAL point08
-ADDU $5, $1, $2 # should be executed
+ADDIU $10, $0, 1 # should be executed
 NOP
-ADDU $7, $2, $3 # should not be executed
+ADDIU $11, $0, 59 # should not be executed
 J point09
 NOP
 point08:
 
 # Test JALR
-JR $30, $31
+JALR $30, $31
 point09:
