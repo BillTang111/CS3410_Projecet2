@@ -11,7 +11,7 @@
 #build DP table
 #	ADDIU $t0, $t0, 4		# t0 = 4	
 	SLL $t1, $s1, 2		# 4*size
-	SUB $sp, $sp, $t1		# (1000 - 4*size) is the size for DP table 
+	SUBU $sp, $sp, $t1		# (1000 - 4*size) is the size for DP table 
 
 
 fib:	
