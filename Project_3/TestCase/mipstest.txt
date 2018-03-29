@@ -44,11 +44,11 @@ SLTI $19, $4, 1
 SLTI $16, $4, 65535
 
 # Test SLTIU
-SLTI $20, $4, 0
-SLTI $21, $4, 31
-SLTI $22, $4, 1500
-SLTI $23, $4, 1
-SLTI $24, $4, 65535
+SLTIU $20, $4, 0
+SLTIU $21, $4, 31
+SLTIU $22, $4, 1500
+SLTIU $23, $4, 1
+SLTIU $24, $4, 65535
 
 # Test ADDU
 ADDU $6, $3, $2
@@ -65,156 +65,148 @@ SUBU $11, $10, $7
 SUBU $11, $11, $11
 
 # Test AND
-SUBU $8, $3, $2
+AND $1, $10, $4
+AND $2, $3, $5
+AND $3, $3, $3
+AND $6, $3, $3
+AND $6, $6, $8
 
-NOP
-NOP
-NOP
-NOP
-ADDIU $2, $0, 2
-NOP
-NOP
-NOP
-NOP
-ANDI $3, $1, 3
-NOP
-NOP
-NOP
-NOP
-ORI $4, $1, 3
-NOP
-NOP
-NOP
-NOP
-XORI $5, $1, 3
-NOP
-NOP
-NOP
-NOP
-ADDU $6, $1, $2   #$6=3
-NOP
-NOP
-NOP
-NOP 
-SUBU $7, $0, $1   #$7=-1
-NOP
-NOP
-NOP
-NOP
-AND $8, $6, $7   #$6=3, $7=-1
-NOP
-NOP
-NOP
-NOP
-OR $9, $6, $7    #$6=3, $7=-1
-NOP
-NOP
-NOP
-NOP
-XOR $10, $6, $7  #$6=3, $7=-1
-NOP
-NOP
-NOP
-NOP
-NOR $11, $6, $7  #$6=3, $7=-1
-NOP
-NOP
-NOP
-NOP
-SLTI $12, $6, 2
-NOP
-NOP
-NOP
-NOP
-SLTIU $13, $6, 2
-NOP
-NOP
-NOP
-NOP
-SLT $14, $6, $7
-NOP
-NOP
-NOP
-NOP
-SLTU $15, $6, $7
-NOP
-NOP
-NOP
-NOP
-ADDIU $8,$0,8
-NOP
-NOP
-NOP
-NOP
-ADDIU $10,$0,1024
-NOP
-NOP
-NOP
-NOP
-SUBU $9,$0,$10
-NOP
-NOP
-NOP
-NOP
-MOVZ $11,$10,$0
-NOP
-NOP
-NOP
-NOP
-MOVN $12,$10,$0
-NOP
-NOP
-NOP
-NOP
-SLL $13,$10,4
-NOP
-NOP
-NOP
-NOP
-SRL $14,$10,4
-NOP
-NOP
-NOP
-NOP
-SRA $15,$9,4
-NOP
-NOP
-NOP
-NOP
-SLLV $16,$10,$8
-NOP
-NOP
-NOP
-NOP
-SRLV $17,$10,$8
-NOP
-NOP
-NOP
-NOP
-SRAV $18,$9,$8
-NOP
-NOP
-NOP
-NOP
-LUI $19,1024
-NOP
-NOP
-NOP
-NOP
-LUI $20,2048
-NOP
-NOP
-NOP
-NOP
-addiu $1, $0, 1
-addiu $2, $0, 2
-NOP
-NOP
-NOP
-addu $3, $1, $2 
-SUBU $4, $2, $1
-NOP
-NOP
+# Test OR
+OR $7, $4, $10
+OR $8, $12, $0
+OR $9, $6, $1
+OR $10, $9, $9
+OR $9, $9, $9
+
+# Test XOR
+XOR $7, $4, $10
+XOR $8, $12, $0
+XOR $9, $6, $1
+XOR $10, $9, $9
+XOR $9, $9, $9
+
+# Test NOR
+NOR $7, $4, $10
+NOR $8, $12, $0
+NOR $9, $6, $1
+NOR $10, $9, $9
+NOR $9, $9, $9
+
+# Test SLT
+SLT $13, $12, $12
+SLT $14, $3, $4
+SLT $15, $4, $3
+SLT $16, $5, $10
+SLT $17, $10, $5
+SLT $10, $10, $10
+
+# Test SLTU
+SLTU $13, $12, $12
+SLTU $14, $3, $4
+SLTU $15, $4, $3
+SLTU $16, $5, $10
+SLTU $17, $10, $5
+SLTU $10, $10, $10
+
+# Test SLL
+SLL $3, $,2, 1
+SLL $4, $,2, 0
+SLL $5, $,2, 31
+SLL $6, $,1, 2
+SLL $6, $,6, 2
+
+# Test SRL
+SRL $3, $,2, 1
+SRL $4, $,2, 0
+SRL $5, $,2, 31
+SRL $6, $,1, 2
+SRL $6, $,6, 2
+
+# Test SLLV
+SLLV $7, $,2, $1
+SLLV $8, $,2, $0
+SLLV $9, $,2, $31
+SLLV $10, $,1, $5
+SLLV $10, $,10, $10
+
+# Test SRLV
+SRLV $11, $,2, $1
+SRLV $12, $,2, $0
+SRLV $13, $,2, $31
+SRLV $14, $,1, $5
+SRLV $14, $,14, $14
+
+# Test SRAV
+SRAV $15, $,2, $1
+SRAV $16, $,2, $0
+SRAV $17, $,2, $31
+SRAV $18, $,1, $5
+SRAV $14, $,14, $14
+
+# Test MOVN
+MOVN $19, $2, $0
+MOVN $12, $12, $0
+MOVN $12, $13, $0
+MOVN $12, $13, $3
+MOVN $14, $14, $4
+
+# Test MOVZ
+MOVZ $19, $2, $0
+MOVZ $12, $12, $0
+MOVZ $12, $13, $0
+MOVZ $12, $13, $3
+MOVZ $14, $14, $4
+
+# 1.2 Test Instruction in Table B
+# Test J
+J point01
+nop
+ADDU $20, $1, $2 # should not be executed
+point01:
+
+J point02
+ADDU $21, $1, $2 # should be executed
+point02:
+
+J point03
+ADDU $22, $1, $2 # should be executed
+SUBU $23, $22, $2 # should not be executed
+point03:
+
+# Test JAL
+JAL point04
+nop
+ADDU $22, $1, $2 # should not be executed
+point04:
+
+JAL point05
+ADDU $20, $1, $2 # should be executed
+point05:
+
+JAL point06
+ADDU $21, $1, $2 # should be executed
+SUBU $19, $22, $2 # should not be executed
+point06:
+
+# Test JAL
+JAL point04
+nop
+ADDU $22, $1, $2 # should not be executed
+point04:
+
+JAL point05
+ADDU $21, $1, $2 # should be executed
+SUBU $19, $22, $2 # should not be executed - PC + 8
+ADDU $20, $3, $2 # should not be executed
+point05:
+
+# Test JR
+JR $31 # Should jump to PC + 8
+
+
+
+
+
 NOP
 ANDI $5, $3,  3
 OR $5, $3, $4
