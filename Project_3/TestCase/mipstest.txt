@@ -186,27 +186,78 @@ point05:
 JAL point06
 ADDU $21, $1, $2 # should be executed
 SUBU $19, $22, $2 # should not be executed
-point06:
-
-# Test JAL
-JAL point04
-nop
-ADDU $22, $1, $2 # should not be executed
-point04:
-
-JAL point05
-ADDU $21, $1, $2 # should be executed
-SUBU $19, $22, $2 # should not be executed - PC + 8
 ADDU $20, $3, $2 # should not be executed
-point05:
+J point07
+NOP
+point06:
 
 # Test JR
 JR $31 # Should jump to PC + 8
+NOP
+point07:
+
+JAL point08
+ADDU $5, $1, $2 # should be executed
+NOP
+ADDU $7, $2, $3 # should not be executed
+J point09
+NOP
+point08:
+
+# Test JALR
+JR $30, $31
+point09:
 
 
+# Test Branch
+# BEQ
+# BNE
+# BLEZ
+# BGTZ
+# BLTZ
+# BGEZ
 
 
+# Test Store
+# SW
+ADDIU $14, $14, 234
+ADDIU $8, $8, 2
+NOP
+SW $14, 10($8)
+SW $14, 3($8)
 
+# SB
+SW $14, 10($31)
+SW $14, 3($31)
+
+
+# Test Load
+# LW
+LW $16, 10($14)
+LW $17, 3($14)
+
+# LB
+LB $14, 10($8)
+LB $30, 0($31)
+
+# LBU
+LBU $14, 3($8)
+LBU $15, 1($8)
+
+# Test Data Hazard
+# load_use 
+ADDIU $14, $14, 234
+ADDIU $8, $8, 2
+ADDIU $2, $2, 5
+SW $14, 10($8)
+NOP
+NOP
+LW $14, 10($8)
+SUBU $23, $14, $2
+SLL $5, $23, 1
+
+
+# Key Test Case from Project 2
 NOP
 ANDI $5, $3,  3
 OR $5, $3, $4
@@ -236,43 +287,4 @@ NOP
 NOP
 ADDIU $10,$0,-2047
 ORI $9, $10, 10010
-
-
-#test store
-# SW
-ADDIU $14, $14, 234
-ADDIU $8, $8, 2
-NOP
-SW $14, 10($8)
-SW $14, 3($8)
-
-# SB
-SW $14, 10($31)
-SW $14, 3($31)
-
-#test load
-# LW
-LW $16, 10($14)
-LW $17, 3($14)
-
-# LB
-LB $14, 10($8)
-LB $30, 0($31)
-
-# LBU
-LBU $14, 3($8)
-LBU $15, 1($8)
-
-#test data hazard
-#load_use 
-ADDIU $14, $14, 234
-ADDIU $8, $8, 2
-ADDIU $2, $2, 5
-SW $14, 10($8)
-NOP
-NOP
-LW $14, 10($8)
-SUBU $23, $14, $2
-SLL $5, $23, 1
-
 
