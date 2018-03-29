@@ -210,12 +210,89 @@ point09:
 
 
 # Test Branch
+Branch1: # will not branch here
+ADDIU $2, $zero, 3
+ADDIU $3, $zero, 1
+
 # BEQ
+BEQ $2, $3, Branch1
+ADDIU $4, $zero, 4 # Should be executed
+ADDIU $5, $zero, 2 # Should be executed
+
+Branch2: # Should loop only 1 time
+ADDIU $5, $5, 2
+BEQ $5, $4, Branch2
+ADDIU $6, $zero, 7 # Should be executed
+
 # BNE
+BNE $0, $0, BNE1
+
+J BNE_after
+BNE1:
+ADDIU $26, $0, 19 # Should not be executed
+BNE_after:
+
+BNE $0, $5, BNE2
+NOP
+ADDIU $24, $0, 17 # Should not be executed
+BNE2:
+
 # BLEZ
-# BGTZ
-# BLTZ
+BLEZ $0, BLEZ1
+ADDIU $2, $1, 1 # delay slot, Should be executed
+ADDIU $30, $1, 3 # not executed
+
+BLEZ1:
+ADDIU $3, $0, -18
+ADDIU $4, $0, 10
+BLEZ $4, BLEZ_not # not branch
+ADDIU $1, $1, 1
+ADDIU $29, $0, 2 
+BLEZ $3, next_BGEZ
+nop
+BLEZ_not:
+ADDIU $29, $0, 1 # should not executed
+
 # BGEZ
+next_BGEZ:
+BGEZ $0, BGEZ_will
+ADDIU $1, $1, 10 # delay slot
+ADDIU $2, $0, 2 # should not executed
+
+BGEZ_will:
+ADDIU $3, $zero, -2 # should not executed
+BGEZ $3, BGEZ_not # not branch
+ADDIU $1, $1, 1 # delay slot
+ADDIU $17, $1, 10 # executed
+BGEZ $17, next_BGTZ
+nop
+BGEZ_not:
+ADDIU $30, $0, 1 # not executed
+
+# BGTZ
+next_BGTZ:
+BGTZ $0, BGTZ_not # not branch
+ADDIU $1, $0, 1 # delay slot
+ADDIU $5, $0, 15 # should be executed
+
+BGTZ_not:
+BGTZ $5, BGTZ_will # not branch
+nop
+ADDIU $4, $0, 19 # should not be executed
+nop
+nop
+BGTZ_will:
+
+# BLTZ
+BLTZ $0, BLTZ_not
+ADDIU $1, $1, 1 # delay slot
+ADDIU $4, $0, -15 # executed
+BLTZ_not:
+
+BLTZ $4, BLTZ_will
+ADDIU $6, $0, 13 # delay slot
+ADDIU $7, $0, -19 # should not be executed
+BLTZ_will:
 
 
 # Test Store

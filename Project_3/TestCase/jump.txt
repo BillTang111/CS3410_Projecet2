@@ -1,0 +1,50 @@
+# 1.2 Test Instruction in Table B
+# Test J
+J point01
+nop
+ADDU $20, $1, $2 # should not be executed
+point01:
+
+J point02
+ADDU $21, $1, $2 # should be executed
+point02:
+
+J point03
+ADDU $22, $1, $2 # should be executed
+SUBU $23, $22, $2 # should not be executed
+point03:
+
+# Test JAL
+JAL point04
+nop
+ADDU $22, $1, $2 # should not be executed
+point04:
+
+JAL point05
+ADDU $20, $1, $2 # should be executed
+point05:
+
+JAL point06
+ADDU $21, $1, $2 # should be executed
+SUBU $19, $22, $2 # should not be executed
+ADDU $20, $3, $2 # should not be executed
+J point07
+NOP
+point06:
+
+# Test JR
+JR $31 # Should jump to PC + 8
+NOP
+point07:
+
+JAL point08
+ADDU $5, $1, $2 # should be executed
+NOP
+ADDU $7, $2, $3 # should not be executed
+J point09
+NOP
+point08:
+
+# Test JALR
+JR $30, $31
+point09:
