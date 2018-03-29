@@ -1,0 +1,450 @@
+# test Table A instructions
+
+# test ADDIU
+ADDIU $2, $0, 13 # GPR[2]=13
+ADDIU $3, $0, -18 # GPR[3]=-18
+ADDIU $3, $3, 0 # GPR[3]=-18
+ADDIU $3, $3, 21 # GPR[3]=3
+
+# test ANDI
+ANDI $4, $2, 5 # 5
+ANDI $4, $4, 65535 # actually I want to pass in -1, yet due to zero extending I have to pass in 65535 for logism to load the program. Same happens to all the other logical instructions .GPR[4]=5
+ANDI $4, $4, 3 # 1
+ANDI $4, $4, 0 # 0
+
+# test ORI
+ORI $5, $0, 65535 # 65535, or 0x0000ffff
+ORI $5, $0, 0 # 0
+ORI $5, $2, 3 # 15
+ORI $5, $5, 0 # 15
+
+# test XORI
+XORI $6, $5, 11 # 4
+XORI $6, $6, 0 # 4
+XORI $6, $6, 4 # 0
+XORI $6, $0, 12 # 12
+
+# test LUI
+LUI $7, 0 # 0
+LUI $7, 65535 #0xffff0000
+LUI $7, 333 # 0x014d, 0x014d0000
+LUI $7, 32769 # 0x8001 = 2^15 + 1, result should be 0x80010000
+
+# test SLTI
+SLTI $8, $6, 0 # 0 b/c 12 > 0
+SLTI $8, $6, 12 # 0 b/c 12 = 12
+SLTI $8, $6, 13 # 1 b/c 12 < 13
+SLTI $8, $7, 0 # 1 b/c $7 holds a neg value
+
+# test SLTIU
+SLTIU $9, $7, 0 # 0 b/c $7's neg value is interpreted as unsigned
+SLTIU $9, $8, 1 # 0 b/c 1 = 1
+SLTIU $9, $8, 2 # 1 b/c 1 < 2
+SLTIU $9, $7, 0x8000 # 1 b/c 0x8001 < 0x8000
+
+# test ADDU
+ADDU $10, $3, $2 # 16
+ADDU $10, $2, $3 # 16
+ADDU $10, $10, $0 # 16
+ADDU $10, $0, $9 # 1
+
+# test SUBU
+SUBU $11, $5, $6 # 3
+SUBU $11, $11, $0 # 3
+SUBU $11, $11, $7 # 2147418115, or 0x7fff0003
+SUBU $11, $11, $11 # 0
+
+# test AND
+AND $12, $5, $6 # 12&15 = 12
+AND $12, $11, $10 # 1&0 = 0
+AND $12, $7, $7 # -2147418112, or 0x80010000
+AND $12, $7, $0 # 0
+
+# test OR
+OR $13, $2, $3 # 15
+OR $13, $7, $7 # -2147418112, or 0x80010000
+OR $13, $13, $0 # -2147418112, or 0x80010000
+OR $13, $3, $7 # -2147418109, or 0x80010003
+
+# test XOR
+XOR $14, $5, $11 # 15
+XOR $14, $13, $0 # -2147418109, or 0x80010003
+XOR $14, $11, $10 # 1
+XOR $14, $14, $0 # 1
+
+# test NOR
+NOR $15, $14, $0 # -2
+NOR $15, $14, $14 # -2
+NOR $15, $11, $3 # -4
+NOR $15, $15, $12 # 3
+
+# test SLT
+SLT $16, $7, $3 # 1 b/c 0x80010000 < 0x00000003
+SLT $16, $15, $14 # 0 b/c 3 > 1
+SLT $16, $14, $15 # 1 b/c 1 < 3
+SLT $16, $7, $13 # 1 b/c -2147418112 < -2147418109
+
+# test SLTU
+SLTU $17, $7, $13 # 1 b/c 0x8001000 < 0x8001003
+SLTU $17, $7, $3 # 0
+SLTU $17, $15, $14 # 0 b/c 3 > 1
+SLTU $17, $14, $15 # 1 b/c 1 < 3
+
+# test SLL
+SLL $18, $7, 1 #131072, or 0x00020000
+SLL $18, $17, 31 # 0x80000000
+SLL $18, $17, 0 # 1
+SLL $18, $2, 2 # 52
+
+# test SRL
+SRL $19, $7, 1 #1073774592, or 0x40008000
+SRL $19, $18, 2 # 13
+SRL $19, $2, 2 # 3
+SRL $19, $2, 4 # 0
+
+# test SRA
+SRA $20, $2, 4 #0 b/c all bits are shifted out
+SRA $20, $19, 1 # 0
+SRA $20, $13, 2 # 0xe0004000 b/c the msb in $13 is 1
+
+# test SLLV
+SLLV $21, $7, $0 # 0x80010000<<0 = 0x80010000
+SLLV $21, $8, $3 # 1<<3 = 8
+SLLV $21, $2, $17 # 13 << 1 = 26
+SLLV $21, $20, $19 # 0xe0004000<<0 = 0xe0004000
+
+# test SRLV
+SRLV $22, $21, $20 # 0xe0004000 b/c the lower 5 bits of $20 is evaluated to be 0
+
+# test SRAV
+SRAV $23, $15, $0 # 3
+
+# test MOVN
+MOVN $24, $3, $0 # GPR[24]=0
+MOVN $24, $6, $2 # since GPR[2]!=0, 12 is moved to GPR[24]
+
+# test MOVZ
+MOVZ $25, $3, $0 # GPR[25]=3
+MOVZ $25, $6, $2 # 3, value should not change
+
+# test Table B instructions
+
+# J
+J test_JAL
+nop
+
+ADDU $26, $0, $0 # will not be executed
+
+# JAL & JALR & JR
+test_JAL:
+JAL SUM #JR will be tested in SUM
+nop
+JALR $31, $1
+nop
+nop
+nop
+nop
+nop
+
+# BEQ
+# if (GPR[0]==0) { GPR[27]=1; } else { GPR[27]=2; }
+ADDIU $2, $zero, 3
+ADDIU $3, $zero, 1
+BEQ $2, $3, BEQ_not_executed #shouldn’t branch here
+nop
+nop
+BEQ $0, $0, BEQ_IF
+ADDIU $1, $1, 1 #test delay slot
+BEQ_not_executed:
+ADDIU $27, $0, 2 # this never executed b/c 0==0
+BEQ_IF:
+ADDIU $27, $0, 1
+
+# BNE
+# if (GPR[0]!=0) { GPR[28]=1; } else { GPR[28]=2; }
+BNE $0, $0, BNE_IF
+nop
+BNE $2, $3, branch
+ADDIU $28, $0, 2 # executed due to delay slot
+nop
+nop
+branch:
+J test_BLEZ
+nop
+BNE_IF:
+ADDIU $28, $0, 1 # not executed
+
+test_BLEZ:
+BLEZ $0, bla
+ADDIU $1, $1, 1 #delay slot
+ADDIU $29, $0, 3 # not executed
+bla:
+ADDIU $2, $0, -18
+ADDIU $3, $0, 10
+BLEZ $3, BLEZ_IF #not branch
+ADDIU $1, $1, 1
+ADDIU $29, $0, 2 
+BLEZ $2, test_BGEZ
+nop
+BLEZ_IF:
+ADDIU $29, $0, 1 # not executed
+
+test_BGEZ:
+BGEZ $0, bla2
+ADDIU $1, $1, 1 #delay slot
+ADDIU $30, $0, 2 # not executed
+nop
+nop
+bla2:
+BGEZ $2, BGEZ_IF #not branch
+ADDIU $1, $1, 1 #delay slot
+ADDIU $30, $0, 2 # executed
+BGEZ $3, test_BLTZ
+nop
+BGEZ_IF:
+ADDIU $30, $0, 1 # not executed
+
+test_BLTZ:
+
+BLTZ $0, 16 #not branch
+ADDIU $1, $1, 1 #delay slot
+ADDIU $4, $0, 15 # executed
+BLTZ $3, BLTZ_IF #not branch
+nop
+BLTZ $2, test_BGTZ 
+nop
+nop
+BLTZ_IF:
+ADDIU $6, $0, 1 # not executed
+
+test_BGTZ:
+
+BGTZ $0, 8 #not branch
+ADDIU $1, $1, 1 #delay slot
+ADDIU $4, $0, 15 # executed
+BGTZ $2, BGTZ_IF #not branch
+nop
+BGTZ $3, Out #finish branch testing
+nop
+nop
+BGTZ_IF:
+ADDIU $6, $0, 5 # not executed
+
+
+SUM:
+ADDIU $26, $0, 1 #1
+ADDIU $1, $ra, 24
+JR $ra #test JR
+nop
+
+Out: # finish the Branch instr testing.
+
+# test load/store
+
+# SW
+SW $14, 0($31)
+SW $15, 4($31)
+
+# SB
+SW $14, 8($31)
+SW $15, 12($31)
+
+# LW
+LW $16, 0($31)
+LW $17, 4($31)
+
+# I trust you on LB and LBU
+# LB
+LB $18, 8($31)
+LB $19, 12($31)
+
+# LBU
+LBU $20, 8($31)
+LBU $21, 12($1)
+
+# test data hazards
+
+# n-CYCLE tests
+#######################
+# EX/MEM Forward A (1 cycle)
+ADDU $4, $2, $3 # 3
+ADDIU $5, $4, 2 # 5
+SUBU $0, $3, $4 # should be 0
+
+# EX/MEM Forward B (1 cycle)
+ADDU $4, $4, $3 # 6
+ADDU $5, $2, $4 # 8
+ADDU $5, $5, $5 # 16
+
+#######################
+# MEM/WB Forward A (2 cycle)
+ADDU $6, $2, $5 # 18
+MOVZ $7, $5, $2 # GPR[7] remains the same value b/c GPR[2]!=0
+ADDIU $8, $6, 3 # 21
+
+# MEM/WB Forward B (2 cycle)
+ADDU $9, $2, $6 # 20
+MOVN $10, $9, $0 # GPR[10] remains 1 b/c GPR[0]==0
+ADDU $11, $9, $10 # 21
+
+# both hazard (3 cycle)
+ADDU $12, $8, $9 # 41
+SUBU $13, $12, $10 # 40
+OR  $14, $11, $12 # 61
+ADDIU $12, $12, 5 #46
+
+#SINGLE
+
+ADDIU $6, $0, 3
+ADDU $6, $6, $6 #6
+
+#DOUBLE
+
+ADDIU $7, $0, 4
+ADDU $7, $7, $7 #8
+ADDU $7, $7, $7 #16
+
+#TRIPLE
+
+ADDIU $8, $0, 5
+ADDU $8, $8, $8 #10
+ADDU $8, $8, $8 #20
+ADDU $8, $8, $8 #40
+
+# EX/MEM Forward A 1-CYCLE-FALSE
+ADDU $0, $2, $3 # 0
+ADDIU $4, $0, 2 # 2
+SUBU $0, $0, $4 # should be 0
+
+# EX/MEM Forward B 1-CYCLE-FALSE
+ADDU $0, $4, $3 # 0
+ADDU $5, $2, $0 # 2
+SUBU $5, $5, $0 # 2
+
+#######################
+# MEM/WB Forward A 2-CYCLE-FALSE
+ADDU $0, $2, $5 # 12
+MOVZ $7, $5, $2 # GPR[7] remains the same value b/c GPR[2]!=0
+ADDIU $8, $0, 3 # 3
+
+# MEM/WB Forward B 2-CYCLE-FALSE
+ADDU $0, $9, $0 # 0
+MOVN $10, $9, $0 # GPR[10] remains 1 b/c GPR[0]==0
+ADDU $11, $9, $0 # 20
+
+# both hazard 3-CYCLE-FALSE
+ADDU $12, $8, $0 # 3
+SUBU $0, $12, $10 # 0
+OR  $13, $0, $12 # 3
+XOR $0, $2, $0 # 0
+
+# DOUBLE FALSE
+ADDIU $0, $0, 15
+ADDU $0, $0, $2
+
+#TRIPLE FALSE 
+ADDIU $0, $0, 15
+ADDU $0, $0, $2
+ADDU $0, $0, $0
+ADDU $0, $0, $0 #Should all be zero
+ADDU $0, $0, $0
+# load-use hazard
+
+# n-CYCLE tests
+#######################
+# 1 CYCLE Ra = Rd
+ADDIU $1, $0, 15
+SW $1, 0($31)
+LW $22, 0($31)
+ADDIU $4, $22, 2 # stall
+
+# 2 CYCLE Ra = Rd
+ADDIU $1, $0, 15
+SW $1, 0($31)
+LW $22, 0($31)
+ADDIU $4, $22, 2 # stall
+SUBU $23, $22, $3 # forwarding, not stall
+
+# 3 CYCLE Ra = Rd
+ADDIU $1, $0, 15
+SW $1, 0($31)
+LW $22, 0($31)
+ADDIU $4, $22, 2 # stall
+SUBU $23, $22, $3 # forwarding, not stall
+ADDIU $24, $22, 1 # has written back, will execute
+
+
+# 1 CYCLE Rb = Rd
+ADDIU $1, $0, 15
+SW $1, 0($31)
+LW $22, 0($31)
+ADDU $4, $0, $22 # stall
+
+# 2 CYCLE Rb = Rd
+ADDIU $1, $0, 15
+SW $1, 0($31)
+LW $22, 0($31)
+ADDU $4, $0, $22 # stall
+SUBU $23, $3, $22 # forwarding, not stall
+
+# 3 CYCLE Rb = Rd
+ADDIU $1, $0, 15
+SW $1, 0($31)
+LW $22, 0($31)
+ADDU $4, $0, $22 # stall
+SUBU $23, $3, $22 # forwarding, not stall
+ADDU $24, $0, $22 # has written back, will execute
+
+# single 
+ADDIU $1, $0, 1
+SW $1, 0($1)
+LW $1, 0($1)
+
+# Double 
+ADDIU $1, $0, 1
+SW $1, 0($1)
+LW $1, 0($1)
+LW $1, 0($1) #will all be 1 yet will stall every time
+
+# Triple
+ADDIU $1, $0, 1
+SW $1, 0($1)
+LW $1, 0($1)
+LW $1, 0($1)
+LW $1, 0($1) #will all be 1 yet will stall every time
+
+#1 cycle false
+SW $1, 0($31)
+LW $0, 0($31)
+ADDIU $5, $0, 12 #no stall
+
+#2 cycle false
+SW $1, 0($31)
+LW $0, 0($31)
+ADDU $0, $22, $0 # no stall
+SUBU $5, $22, $0 # no forward since 0 is always 0
+
+#3 cycle false
+SW $1, 0($31)
+LW $0, 0($31)
+ADDU $0, $22, $0 # no stall
+SUBU $5, $22, $0 # no forward since 0 is always 0
+ADDIU $0, $0, 1 # always 0
+
+#Double False
+ADDIU $1, $0, 1
+SW $1, 0($0)
+LW $0, 0($0)
+LW $0, 0($0) #will all be 0 yet will not stall
+
+#Triple False
+ADDIU $1, $0, 1
+SW $1, 0($0)
+LW $0, 0($0)
+LW $0, 0($0)
+LW $0, 0($0) #will all be 0 yet will not stall
+
+#Our 3 mips hailstone programs are used as overall tests for mixed hazards, instructions, and memory usage. We will not copy them here to save space. 
+
+
+OUT:
