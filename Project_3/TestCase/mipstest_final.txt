@@ -41,14 +41,14 @@ SLTI $16, $4, 0
 SLTI $17, $4, 31
 SLTI $18, $4, 1500
 SLTI $19, $4, 1
-SLTI $16, $4, 65535
+SLTI $16, $4, 3000
 
 # Test SLTIU
 SLTIU $20, $4, 0
 SLTIU $21, $4, 31
 SLTIU $22, $4, 1500
 SLTIU $23, $4, 1
-SLTIU $24, $4, 65535
+SLTIU $24, $4, 3000
 
 # Test ADDU
 ADDU $6, $3, $2
@@ -109,39 +109,39 @@ SLTU $17, $10, $5
 SLTU $10, $10, $10
 
 # Test SLL
-SLL $3, $,2, 1
-SLL $4, $,2, 0
-SLL $5, $,2, 31
-SLL $6, $,1, 2
-SLL $6, $,6, 2
+SLL $3, $2, 1
+SLL $4, $2, 0
+SLL $5, $2, 31
+SLL $6, $1, 2
+SLL $6, $6, 2
 
 # Test SRL
-SRL $3, $,2, 1
-SRL $4, $,2, 0
-SRL $5, $,2, 31
-SRL $6, $,1, 2
-SRL $6, $,6, 2
+SRL $3, $2, 1
+SRL $4, $2, 0
+SRL $5, $2, 31
+SRL $6, $1, 2
+SRL $6, $6, 2
 
 # Test SLLV
-SLLV $7, $,2, $1
-SLLV $8, $,2, $0
-SLLV $9, $,2, $31
-SLLV $10, $,1, $5
-SLLV $10, $,10, $10
+SLLV $7, $2, $1
+SLLV $8, $2, $0
+SLLV $9, $2, $31
+SLLV $10, $1, $5
+SLLV $10, $10, $10
 
 # Test SRLV
-SRLV $11, $,2, $1
-SRLV $12, $,2, $0
-SRLV $13, $,2, $31
-SRLV $14, $,1, $5
-SRLV $14, $,14, $14
+SRLV $11, $2, $1
+SRLV $12, $2, $0
+SRLV $13, $2, $31
+SRLV $14, $1, $5
+SRLV $14, $14, $14
 
 # Test SRAV
-SRAV $15, $,2, $1
-SRAV $16, $,2, $0
-SRAV $17, $,2, $31
-SRAV $18, $,1, $5
-SRAV $14, $,14, $14
+SRAV $15, $2, $1
+SRAV $16, $2, $0
+SRAV $17, $2, $31
+SRAV $18, $1, $5
+SRAV $14, $14, $14
 
 # Test MOVN
 MOVN $19, $2, $0
@@ -365,4 +365,16 @@ NOP
 NOP
 ADDIU $10,$0,-2047
 ORI $9, $10, 10010
-
+ADDIU $10,$0,-2047
+ORI $10, $10, 10010
+NOP
+NOP
+NOP
+ADDIU $11,$0,-2047
+ADDIU $12,$0,10010
+ORI $13, $11, 10010
+NOP
+NOP
+NOP
+ADDIU $10,$0,-2047
+ORI $9, $10, 10010
