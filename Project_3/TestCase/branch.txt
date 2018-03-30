@@ -15,6 +15,7 @@ ADDIU $6, $zero, 7 # Should be executed
 
 # BNE
 BNE $0, $0, BNE1
+NOP
 
 J BNE_after
 BNE1:

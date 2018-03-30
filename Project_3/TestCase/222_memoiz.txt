@@ -1,0 +1,101 @@
+#Main
+	ADDIU $a0, $zero, 1		# n = 3 (n in a0)
+	ADDIU $a1, $zero, 0		# log_arr starts at 1000 (n in a0)
+	ADDIU $a2, $zero, 3		# size = 3 
+	ADDIU $sp, $sp, 1000		# sp = 1000 (stack pointer initial to 1000)
+
+	JAL fib
+	NOP
+	J exit
+
+#build DP table
+#	ADDIU $t0, $t0, 4		# t0 = 4	
+	SLL $t1, $s1, 2		# 4*size
+	SUBU $sp, $sp, $t1		# (1000 - 4*size) is the size for DP table 
+
+
+fib:	
+#prologue
+	ADDIU $sp, $sp, -40
+	SW $ra, 36($sp) 		# save $ra
+	SW $fp, 32($sp)		# save old $fp
+	SW $a0, 28($sp)		# save n in callee saved s0
+	SW $a2, 24($sp)		# save size in callee saved s2
+	SW $a1, 20($sp)		# save log_arr pointer in callee saved s1
+	#a0-a4:0 to 12; DP_pointer to 16; fib_result to 20 
+	ADDIU $fp, $sp, 36  	# set new frame ptr
+
+#Body
+#if(n < size)
+	SLT $t0, $a0, $a2		# if n < size
+	BEQ $t0, $zero, case1	# ( n > size, go to case2)
+	NOP
+
+	#log_array[n]
+	SLL $t1, $a0, 2		# 4*n
+	ADDU $t2, $t1, $a1	# log_array[n] = MEM(DP_pointer + offset)
+	LW  $t3, 0($t2)		# t3 = og_array[n]
+	BEQ $zero, $t3, case1	# (log_array[n]==0, go to case2)
+	NOP
+	MOVZ $v0, $t3, $0    
+	J epilogue				#log_array[n]
+	NOP
+
+# if (n==0)
+case1:
+	BNE $a0, $zero, case2
+	NOP
+	MOVZ $v0, $a0, $0    
+	J epilogue				#return 0
+	NOP
+
+# if (n==1)
+case2: 
+	ADDIU $t6, $zero, 1		# t6 = 1 (for branch when n ==1)
+	BNE $a0, $t6, fib_recurse
+	NOP
+	MOVZ $v0, $a0, $0   
+	J epilogue				#return 1	
+	NOP
+
+# loop
+fib_recurse:
+	#first function
+	ADDIU $a0, $a0, -1		#n-1
+	JAL fib			#recursion
+	NOP
+	LW $a0, 28($sp)		#restore n
+	SW $v0, 16($sp)		#save result of fib(n-1)
+
+	#second function
+	ADDIU $a0, $a0, -2		#n-2
+	JAL fib			#recursion
+	NOP
+	lW $t0, 16($sp)		#restore result of fib(n-1)
+	LW $a0, 28($sp)		#restore n
+	ADDU $v0,$t0,$v0   		#calc result
+
+# if (n < size)
+	SLT $t0, $a0, $a2		# if n < size
+	BEQ $t0, $zero, epilogue	# ( n > size, go to epilogue)
+	NOP
+	#log_array[n]
+	SLL $t1, $a0, 2		# 4*n
+	ADDU $t2, $t1, $a1	# log_array[n] = MEM(DP_pointer + offset)
+	SW  $v0, 0($t2)		# log_array[n] = answer
+
+epilogue:
+	LW $ra, 36($sp) 		# restore $ra
+	LW $fp, 32($sp)   		# restore fp
+	LW $a0, 28($sp)		# restore n in callee saved s0
+	LW $a1, 20($sp)		# save log_arr pointer in callee saved s1
+	LW $a2, 24($sp)		# restore size in callee saved s1
+	ADDIU $sp, $sp, 40		#dealloc frame
+	JR $ra
+	NOP
+exit:
+
+
+
+
+

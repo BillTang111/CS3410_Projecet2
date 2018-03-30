@@ -1,0 +1,32 @@
+# 1.2 Test Instruction in Table B
+# Test J
+J point01
+nop
+ADDIU $1, $0, 2 # should not be executed
+point01:
+
+J point02
+ADDIU $2, $0, 5 # should be executed
+point02:
+
+J point03
+ADDIU $3, $0, 7 # should be executed
+ADDIU $4, $0, 3 # should not be executed
+point03:
+
+# Test JAL
+JAL point04
+nop
+ADDIU $5, $0, 8 # should not be executed
+point04:
+
+JAL point05
+ADDIU $6, $0, 11 # should be executed
+point05:
+
+JAL point06
+ADDIU $7, $0, 13 # should be executed
+ADDIU $8, $0, 23 # should not be executed
+ADDIU $9, $0, 29 # should not be executed
+NOP
+point06:
