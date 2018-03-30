@@ -1,0 +1,531 @@
+commit 42f70784033bf14eee4d847c06f2e8e647c4096c
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Thu Mar 29 22:06:11 2018 -0400
+
+    modify final test case
+
+commit ea74edac8c0c229db98989a2a3b257a91200e1c4
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Thu Mar 29 21:57:13 2018 -0400
+
+    Final Style correction
+
+commit fab9aa9e8b8267229d43aecfc1622f78694a6df8
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Thu Mar 29 21:26:46 2018 -0400
+
+    LUH bug zap
+
+commit ae0542781f572173e1797af191a8ff1668bbb43c
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Thu Mar 29 21:01:50 2018 -0400
+
+    JALR bug fix
+
+commit e322eef2cc631fa78a3b63ffbc28cc5759f47bb2
+Author: BillTang111 <bt294@cornell.edu>
+Date:   Thu Mar 29 13:35:35 2018 -0400
+
+    test case
+
+commit 0d12b26583ee5cee5bd80ecacf7270a736132b5c
+Author: BillTang111 <bt294@cornell.edu>
+Date:   Thu Mar 29 11:07:52 2018 -0400
+
+    recur runs successfully
+
+commit f48ba8578f23b94608398dddc47acdb3cb3ad37d
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Thu Mar 29 03:59:45 2018 -0400
+
+    PC bug fix
+
+commit 2abc3219d2156749cd42e5bab645fdb2afee2c01
+Author: BillTang111 <bt294@cornell.edu>
+Date:   Thu Mar 29 03:47:36 2018 -0400
+
+    load hazard
+
+commit 2a054bfc61f08b6ccbc54375e6c2378db8963a2f
+Merge: 758e197 6e76a20
+Author: BillTang111 <bt294@cornell.edu>
+Date:   Thu Mar 29 03:02:50 2018 -0400
+
+    Merge branch 'master' of https://github.com/BillTang111/CS3410_Projecet2
+
+commit 758e19737ec9f216dc29c4b337f5f1e0a6bbacac
+Author: BillTang111 <bt294@cornell.edu>
+Date:   Thu Mar 29 03:02:48 2018 -0400
+
+    fix current bug
+
+commit 6e76a200f1ac6b3f7b137896a085d08502e7f886
+Merge: 95bc71d 1c03d08
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Thu Mar 29 02:55:55 2018 -0400
+
+    Merge branch 'master' of https://github.com/BillTang111/CS3410_Projecet2
+
+commit 95bc71d41900fcae4835207e85754c2f208fea5c
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Thu Mar 29 02:55:44 2018 -0400
+
+    test case update
+
+commit 1c03d089d1ce35295b21c1ec7b713d2d37e9cfbe
+Author: BillTang111 <bt294@cornell.edu>
+Date:   Thu Mar 29 02:55:36 2018 -0400
+
+    keep working
+
+commit 70c8e79f32e326c9327f2a024b2e40e8b54a6c92
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Thu Mar 29 01:53:02 2018 -0400
+
+    add test case
+
+commit a5fa1342a2e246b64d204ccff57862da1d5133dd
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Thu Mar 29 01:06:45 2018 -0400
+
+    update
+
+commit 6378d80cd3857d23747912598e91d75d1cacd36e
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Thu Mar 29 00:29:53 2018 -0400
+
+    JAL bug fix
+
+commit 100f07cd73f9f1797ad8aa1b8612e03278050d3d
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Wed Mar 28 23:49:04 2018 -0400
+
+    fix jump bug
+
+commit 968c0d7a2e719b0444bc981b7ca9f3d795c7c2e2
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Wed Mar 28 23:30:01 2018 -0400
+
+    move PC pass to EXE-IF
+
+commit 76462fb446ca08eaf15a6a4aa72996c00aa7b269
+Merge: 4e324c2 b0971af
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Wed Mar 28 23:12:36 2018 -0400
+
+    Merge branch 'master' of https://github.com/BillTang111/CS3410_Projecet2
+
+commit 4e324c22a256977a4bbbf45cdf48593151021986
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Wed Mar 28 23:12:34 2018 -0400
+
+    jump bug fix
+
+commit b0971af22381b2fdaad1d99aaded0dd70724ff2a
+Author: BillTang111 <bt294@cornell.edu>
+Date:   Wed Mar 28 22:51:19 2018 -0400
+
+    update testcase
+
+commit df03fe89aeb63b79aead3c2bf792fddd9db9148f
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Wed Mar 28 22:49:14 2018 -0400
+
+    update zap and stall
+
+commit 2cce9ceb21d28ba5648c0d4cd2ec15622ff570ed
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Wed Mar 28 22:10:21 2018 -0400
+
+    wiring bug
+
+commit d50389fa7fe9adc1fa3821f9143b2e1b9adb6e8b
+Merge: d755aee f69f0cc
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Wed Mar 28 22:07:01 2018 -0400
+
+    Merge branch 'master' of https://github.com/BillTang111/CS3410_Projecet2
+
+commit d755aee6eecbcdbd61051ed5cfc7deb01bc03edb
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Wed Mar 28 22:06:36 2018 -0400
+
+    a
+
+commit f69f0cce830dd0c3e17b184a4d0828de2fc9f46f
+Author: BillTang111 <bt294@cornell.edu>
+Date:   Wed Mar 28 22:05:45 2018 -0400
+
+    pre_bug
+
+commit 6133052406fd6dc8a5fdd6b17f80e0af2b1f2187
+Author: BillTang111 <bt294@cornell.edu>
+Date:   Wed Mar 28 00:57:11 2018 -0400
+
+    update LoadUse box
+
+commit 02ba11d0626b317ab656084c2a09c3b8bd0fe26c
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Wed Mar 28 00:18:16 2018 -0400
+
+    bug
+
+commit 76e26882df2452dbb6899fab7ec5b9ed991f36a2
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Tue Mar 27 23:53:50 2018 -0400
+
+    fix bug
+
+commit 5c2e9711752aa277df5decc10822519de4eeee04
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Tue Mar 27 23:18:23 2018 -0400
+
+    modify main control
+
+commit 9d3f35df184295d324d4f09eb326c5d7f05da820
+Author: BillTang111 <bt294@cornell.edu>
+Date:   Tue Mar 27 22:23:36 2018 -0400
+
+    update mem register
+
+commit 12d817f1767f2f4daf2330a56fcb3a60aecb6f6b
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Tue Mar 27 21:58:09 2018 -0400
+
+    bug
+
+commit 0f605571c34c729bb59addbc63008e03f839e027
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Tue Mar 27 21:35:49 2018 -0400
+
+    add zap
+
+commit 553f0951c67adfceb20a93db87d3b619a46b80c6
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Tue Mar 27 21:24:08 2018 -0400
+
+    bug fix
+
+commit b9a97950598bd5d80e857af0a168953e1354db63
+Merge: 9624196 71e86f8
+Author: BillTang111 <bt294@cornell.edu>
+Date:   Tue Mar 27 21:22:23 2018 -0400
+
+    Merge
+
+commit 9624196ede495c6e48cff9917d36f208495c1e17
+Author: BillTang111 <bt294@cornell.edu>
+Date:   Tue Mar 27 21:21:29 2018 -0400
+
+    update!!! start
+
+commit 71e86f8706ac5d224d22889af6e40763177f6b8b
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Tue Mar 27 21:14:35 2018 -0400
+
+    little bug
+
+commit 778f7cc3202ea82c6e4ab326e2814cc34007f3b8
+Author: BillTang111 <bt294@cornell.edu>
+Date:   Tue Mar 27 17:49:42 2018 -0400
+
+    load and store
+    
+    finish wiring them. wait for debugging
+
+commit 64ea2da5558fc1a927e8877ebb975b61f329d1d1
+Author: BillTang111 <bt294@cornell.edu>
+Date:   Tue Mar 27 10:51:19 2018 -0400
+
+    RAm first update
+
+commit 1d0c065b7d23031d52ab886b71a48ace291cf096
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Mon Mar 26 22:58:47 2018 -0400
+
+    jump and branch
+
+commit 7aa1b1663635f9080c36ccfb3ae0c1e7690e2f2b
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Mon Mar 26 22:24:55 2018 -0400
+
+    add Jump and Branch (lack link part)
+
+commit a1391befec33dbb29cc234ec01d365383866bf8e
+Merge: da912e8 190b50a
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Mon Mar 26 15:51:15 2018 -0400
+
+    Merge branch 'master' of https://github.com/BillTang111/CS3410_Projecet2
+
+commit da912e871c87f82e0c1f1c3709c460d2bbc3a6ab
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Mon Mar 26 15:51:06 2018 -0400
+
+    try jump and branch first implement
+
+commit 190b50afd3286e8c76efa7b36e5b15e8dd95dd93
+Author: BillTang111 <bt294@cornell.edu>
+Date:   Mon Mar 26 14:04:11 2018 -0400
+
+    add Fibonacci_memoiz.txt Fibonacci_recur.txt Iterative Fibonacci.txt
+
+commit 638e84f9dd7627728d3a703c2f8a7f1b317294f3
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Thu Mar 22 20:26:47 2018 -0400
+
+    add a little
+
+commit a36d81de9bd5b8fcfbad1ef97c0c00c2be008a47
+Author: BillTang111 <bt294@cornell.edu>
+Date:   Tue Mar 20 23:07:12 2018 -0400
+
+    write add me
+
+commit 2f1a914241be7da07aea990f3943dd9637ae02bd
+Author: BillTang111 <bt294@cornell.edu>
+Date:   Tue Mar 20 21:32:44 2018 -0400
+
+    relocation
+    
+    try to organize folders for this class
+
+commit 267bd66537564db3011f3f2285c553e9047e5726
+Author: BillTang111 <bt294@cornell.edu>
+Date:   Tue Mar 20 21:25:07 2018 -0400
+
+    not too much new
+
+commit 17597cf8b81bfa131899b97594552a3d83c23b10
+Author: BillTang111 <bt294@cornell.edu>
+Date:   Tue Mar 20 21:01:08 2018 -0400
+
+    fix addiu bug
+    
+    just mux usage problem
+
+commit 0ee6988ee4a6a6fa5d5941c6c7bd5baaa0aeff12
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Tue Mar 13 22:03:20 2018 -0400
+
+    final
+
+commit c13257e2190f9a182111b64454f43a55d191817c
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Tue Mar 13 21:11:41 2018 -0400
+
+    add case
+
+commit 5e716859e49d545d6138673ba442cd3f2232c865
+Merge: 1633e95 d628504
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Mon Mar 12 19:02:23 2018 -0400
+
+    Merge branch 'master' of https://github.com/BillTang111/CS3410_Projecet2
+
+commit 1633e95ec04dc21c80d83748f129d372f29af432
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Mon Mar 12 19:01:57 2018 -0400
+
+    add design doc
+
+commit d6285046045a5a114c13df2a44322815876e4e97
+Author: BillTang111 <bt294@cornell.edu>
+Date:   Mon Mar 12 18:50:43 2018 -0400
+
+    fib forwarding correct
+
+commit fc3674615839024e828763d90a77545c94219fa4
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Mon Mar 12 16:29:42 2018 -0400
+
+    add test case
+
+commit 40d4909ad269e7d1c312b2cdb78e00bbedbbbd4a
+Author: BillTang111 <bt294@cornell.edu>
+Date:   Mon Mar 12 16:28:29 2018 -0400
+
+    alucontrol update
+
+commit fc83426405842c54a9d03ef59a58b963e80b2081
+Merge: b539b4f 61e9072
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Mon Mar 12 15:59:22 2018 -0400
+
+    Merge branch 'master' of https://github.com/BillTang111/CS3410_Projecet2
+
+commit b539b4f92c0ee27c75bff4f705871962b60f8ca7
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Mon Mar 12 15:59:19 2018 -0400
+
+    something change
+
+commit 61e9072c029e6e7caa6effa781d56f7d581f08ac
+Author: BillTang111 <bt294@cornell.edu>
+Date:   Mon Mar 12 15:57:45 2018 -0400
+
+    testupdate
+
+commit 0c70f0810566330575db2d91b2da8e205bcd4281
+Merge: 08296e4 1663916
+Author: BillTang111 <bt294@cornell.edu>
+Date:   Mon Mar 12 15:38:16 2018 -0400
+
+    Merge branch 'master' of https://github.com/BillTang111/CS3410_Projecet2
+
+commit 08296e4d2c4de8880edb94aadc4b4d7da7251a6d
+Author: BillTang111 <bt294@cornell.edu>
+Date:   Mon Mar 12 15:38:15 2018 -0400
+
+    testupdate
+
+commit 1663916f4b38fe692205ee86f2b877425e182ad0
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Mon Mar 12 15:35:02 2018 -0400
+
+    Forwarding to all calculation units
+
+commit effb4c5e73f59a528d48a8471f0d36a35b3e5c9d
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Mon Mar 12 15:24:15 2018 -0400
+
+    fix forwarding bug
+
+commit b6b8f88917ec7e75f18adf214258b36f9d98c613
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Mon Mar 12 15:21:33 2018 -0400
+
+    connect
+
+commit 3c132d8fcd82751f455a9dd9100dbda369f19ea6
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Mon Mar 12 15:08:37 2018 -0400
+
+    add Fibonacci
+
+commit 0e9a9570abdd1974b071073a35d4aeb23972b5e4
+Author: BillTang111 <bt294@cornell.edu>
+Date:   Mon Mar 12 15:08:21 2018 -0400
+
+    debug wire not co
+
+commit 6c5ce0311204af7e4441cebe85e11b91e0a20d9c
+Merge: c65382e a1a305e
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Mon Mar 12 14:44:14 2018 -0400
+
+    Merge branch 'master' of https://github.com/BillTang111/CS3410_Projecet2
+
+commit c65382e03081f03bc15a936d00cf09e7eb3d2f26
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Mon Mar 12 14:44:12 2018 -0400
+
+    add probe
+
+commit a1a305e16cd27f90630c0871f132c5b55691f7c5
+Author: BillTang111 <bt294@cornell.edu>
+Date:   Mon Mar 12 14:43:28 2018 -0400
+
+    add test1
+    
+    simplisest test
+
+commit 9f9a5ad3e278ef7ff05d76fb02226dd82d8efd1a
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Mon Mar 12 12:56:01 2018 -0400
+
+    Add Rule out B instruction component
+
+commit 4643c92f0672542d058b3edc1a532edf172fe9d9
+Author: BillTang111 <bt294@cornell.edu>
+Date:   Mon Mar 12 12:51:50 2018 -0400
+
+    add forwarding to MIPS32
+
+commit aca0754857e6fe53323a4880049ea1d9e8c21a00
+Author: BillTang111 <bt294@cornell.edu>
+Date:   Mon Mar 12 12:17:56 2018 -0400
+
+    very small change
+
+commit be255741d77cfce65e14dbf3261dda1e1f884455
+Author: BillTang111 <bt294@cornell.edu>
+Date:   Mon Mar 12 12:16:04 2018 -0400
+
+    forward added
+
+commit 3cef66247a40c0ad79bcef5e67e4420935dc13f6
+Author: BillTang111 <bt294@cornell.edu>
+Date:   Mon Mar 12 12:09:27 2018 -0400
+
+    forwarding unit
+
+commit 87a20ca79cd6c2e904ab5d22cc2b8ced22979a38
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Sun Mar 11 18:25:41 2018 -0400
+
+    try to add NOP implementation
+
+commit 1046653957c10faa3c0860b5e45cd22b97284429
+Author: BillTang111 <bt294@cornell.edu>
+Date:   Sun Mar 11 17:00:48 2018 -0400
+
+    change ALUcontrol
+    
+    SLT SLTU
+
+commit 60d6b666242ec1a03e629bdaaf9513ca46b7b8cc
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Sun Mar 11 16:54:08 2018 -0400
+
+    debug multiplexer
+
+commit 74dc695f4ff995accc4305593af6fe372a399e03
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Sat Mar 10 01:03:27 2018 -0500
+
+    try add SLT
+
+commit 499451d9b458623d138c27669c009e8d21089064
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Sat Mar 10 00:24:09 2018 -0500
+
+    Implement ALUControl Decode
+
+commit d7b27a45e65aa60c7e9181cc251910a0df82140a
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Fri Mar 9 23:39:30 2018 -0500
+
+    Implement MainControl, LUI, MOVZ, MOVN
+
+commit ac22d1b6f1f2fcd6fc3a6a8b6c8dab30867d38f7
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Mon Mar 5 15:31:51 2018 -0500
+
+    Implement main frame details
+
+commit 98d5308a00fe12f835fcab1f49fad059424cf5ee
+Author: Hao Rong <hr335@cornell.edu>
+Date:   Mon Mar 5 14:26:04 2018 -0500
+
+    Main Frame Circuit setup
+
+commit 3811653b0cef6eb5d53432751a50248f54005298
+Author: BillTang111 <bt294@cornell.edu>
+Date:   Mon Mar 5 13:02:30 2018 -0500
+
+    ititial build
+
+commit 7925cf971d5ac28dac016907aebe9a7db0741d9a
+Author: BillTang111 <bt294@cornell.edu>
+Date:   Sun Mar 4 14:46:36 2018 -0500
+
+    getting started
+    
+    create MIPS32 file
+
+commit 1069367176141d29c65d484d55cbcd58fa07695e
+Author: Bill <bt294@cornell.edu>
+Date:   Sun Feb 25 10:10:14 2018 -0500
+
+    Initial commit
