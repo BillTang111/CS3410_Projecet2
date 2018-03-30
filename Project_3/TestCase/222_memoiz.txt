@@ -1,5 +1,5 @@
 #Main
-	ADDIU $a0, $zero, 1		# n = 3 (n in a0)
+	ADDIU $a0, $zero, 3		# n = 3 (n in a0)
 	ADDIU $a1, $zero, 0		# log_arr starts at 1000 (n in a0)
 	ADDIU $a2, $zero, 3		# size = 3 
 	ADDIU $sp, $sp, 1000		# sp = 1000 (stack pointer initial to 1000)
