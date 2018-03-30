@@ -396,18 +396,18 @@ SUBU $23, $3, $22 # forwarding, not stall
 ADDU $24, $0, $22 # has written back, will execute
 
 # single 
-ADDIU $1, $0, 1
+ADDIU $1, $0, 4
 SW $1, 0($1)
 LW $1, 0($1)
 
 # Double 
-ADDIU $1, $0, 1
+ADDIU $1, $0, 4
 SW $1, 0($1)
 LW $1, 0($1)
 LW $1, 0($1) #will all be 1 yet will stall every time
 
 # Triple
-ADDIU $1, $0, 1
+ADDIU $1, $0, 4
 SW $1, 0($1)
 LW $1, 0($1)
 LW $1, 0($1)
