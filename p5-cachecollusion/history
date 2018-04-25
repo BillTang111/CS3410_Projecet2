@@ -1,0 +1,9 @@
+==> greedy wins over greedy with 0 cycles left, final score is 7,169,119 vs. 6,369,928
+==> greedy wins over greedy with 0 cycles left, final score is 7,169,119 vs. 6,369,928
+==> fbi ties with fbi with 9,352,626 cycles left, final score is 5,755,605 vs. 5,755,605
+==> fbi ties with fbi with -647374 cycles left, final score is 5,755,605 vs. 5,755,605
+==> fbi loses to greedy with 0 cycles left, final score is 5,755,338 vs. 6,279,295
+==> greedy wins over fbi with 0 cycles left, final score is 6,783,512 vs. 5,755,095
+==> fbi loses to greedy with 0 cycles left, final score is 5,755,338 vs. 6,279,295
+==> fbi loses to greedy with 0 cycles left, final score is 5,755,338 vs. 6,279,295
+==> noop loses to greedy with 0 cycles left, final score is 0 vs. 10,717,654
