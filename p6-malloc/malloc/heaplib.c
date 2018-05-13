@@ -20,6 +20,8 @@
 /* Align the address to 8-bytes by taking the upper bound (address => unsigned long)*/
 #define ALIGN(ptr) (((unsigned long)ptr + ALIGNMENT - 1) & ~(ALIGNMENT-1))
 
+/* Check if a block is free */
+#define IS_FREE(blk_size) ((blk_size & 1) == 0)
 
 /* -------------------- PRINT DEBUG FNS ----------------- */
 
@@ -73,6 +75,7 @@ void hl_init(void *heap, unsigned int heap_size) {
     //check the constraints 
     if(heap_size < MIN_HEAP_SIZE || !heap){
         printf("Ahh, your input heap_size is wrong \n");
+        return NULL;
     }
 
     // start setting up the heap
@@ -140,14 +143,6 @@ block_header* find_block (block_header* lst_start, unsigned int payload_size){
 } 
 
 /* -------------------- hl_alloc ----------------- */
-/* Allocates a block of memory of size block_size bytes from the heap starting
- * at 'heap'. Returns a pointer to the block on success; returns
- * 0 if the allocator cannot satisfy the request.
- *
- * PRECONDITIONS:
- * (1) hl_init must have been called exactly once for this heap
- * If preconditions are violated, non-graceful failure is acceptable.
- */
 void *hl_alloc(void *heap, unsigned int block_size) {
 
     //check constraints
@@ -230,7 +225,7 @@ void *hl_alloc(void *heap, unsigned int block_size) {
         }
     }
 
-    //Find a pointer to the block of memory for the return
+    //Find a pointer to the block of memory (data section) for the return
     void * alloc_block_addr = ADD_BYTES(tgt_blk, ALIGNMENT);
 
     #ifdef PRINT_DEBUG
@@ -243,7 +238,41 @@ void *hl_alloc(void *heap, unsigned int block_size) {
     return alloc_block_addr;
 }
 
+/* Releases the block of previously allocated memory pointed to by
+ * block (which currently resides in the heap pointed to by
+ * heap). Acts as a NOP if block == 0.
+ *
+ * PRECONDITIONS:
+ * (1) block must have been returned to the user from a prior
+ * call to hl_alloc or hl_resize
+ * (2) hl_release can only be called ONCE in association with that
+ * prior call to hl_alloc or hl_resize
+ * If preconditions are violated, non-graceful failure is acceptable.
+ */
+/* -------------------- hl_release ----------------- */
 void hl_release(void *heap, void *block) {
+    // check constraint 
+    if (block == NULL){return;}
+
+    // releasing a previous allocaiton -> do nothing
+    if((unsigned long)block == ALIGN(heap)) return;
+
+    // retrieve the pointer
+    block_header* block_free_hd = (block_header *)(ADD_BYTES(block, -ALIGNMENT));
+    block_footer* block_free_ft = (block_header *)
+        (ADD_BYTES(block, (block_free_hd -> block_size)-sizeof(block_footer)));
+
+    // indicating the block is freed
+    block_free_hd -> block_size = (block_free_hd -> block_size) & ~(1);
+    block_free_ft -> block_size = block_free_hd -> block_size;
+
+    //link the freed block back to the list
+    block_footer* prev_footer = ADD_BYTES(block_free_hd, -sizeof(block_footer));
+    block_header* next_header = ADD_BYTES(block_free_hd, (block_free_hd->block_size)); 
+    // check if the prev block is free (free = 1)
+    // int is_prev_free = 
+
+
     return;
 }
 

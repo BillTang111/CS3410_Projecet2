@@ -7,7 +7,7 @@ int main(){
     algning(4); 
     // add_byte(4);
 
-    print_daaaaa(21);  
+    print_daaaaa(22);  
     print_ooooo(8);
     printf("\n This is the start !!!!!  \n");
 
@@ -16,6 +16,10 @@ int main(){
 
     void* alloc = hl_alloc(heap, 105);
     // printf("sizeof(size_t) is  %d\n", sizeof(size_t));
+
+    // unsigned int mask = ~(1);
+
+    // printf("this is bit test: %u \n", mask);
     
     return 0;
 } 
