@@ -14,6 +14,7 @@ int main(){
     char heap[1300];
     hl_init(heap, 1300);
 
+    void* alloc = hl_alloc(heap, 105);
     // printf("sizeof(size_t) is  %d\n", sizeof(size_t));
     
     return 0;

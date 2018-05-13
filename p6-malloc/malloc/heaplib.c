@@ -180,7 +180,7 @@ void *hl_alloc(void *heap, unsigned int block_size) {
 
         //create a footer for this newly allocated block
         block_footer* tgt_blk_footer = ADD_BYTES(tgt_blk, Min_size-sizeof(block_footer));
-        tgt_blk_footer -> block_size = Min_size;
+        tgt_blk_footer -> block_size = tgt_blk -> block_size;
 
         //create a new header for the free splitted block;
         block_header* splt_header = ADD_BYTES(tgt_blk, Min_size);
@@ -189,8 +189,16 @@ void *hl_alloc(void *heap, unsigned int block_size) {
         splt_header -> next = tgt_blk -> next;
 
         //update the dependencies 
-        if (tgt_blk -> prev != NULL){(tgt_blk -> prev) -> next = splt_header;}
-        if (tgt_blk -> next != NULL){(tgt_blk -> next) -> prev = splt_header;}
+        if (tgt_blk -> prev != NULL)
+            {
+                block_header* temp = (tgt_blk -> prev);
+                temp -> next = splt_header;
+            }
+        if (tgt_blk -> next != NULL)
+            {
+                block_header* temp = (tgt_blk -> next);
+                temp  -> prev = splt_header;
+            }
 
         //update the old_footer for now_splitted block
         old_footer -> block_size = old_size - Min_size;
@@ -200,11 +208,37 @@ void *hl_alloc(void *heap, unsigned int block_size) {
             heap_head -> fst_block  = splt_header;
         }
     }else{ //No need to split; just remove the tgt_blk from the free block list
+        //inidicating no free anymore
+        block_footer* footer = ADD_BYTES(tgt_blk, (tgt_blk -> block_size) - sizeof(block_footer));
+        tgt_blk -> block_size = tgt_blk -> block_size | 1;
+        footer -> block_size = tgt_blk -> block_size;
 
+        //update the dependencies 
+        if (tgt_blk -> prev != NULL)
+            {
+                block_header* temp = (tgt_blk -> prev);
+                temp -> next = tgt_blk->next;
+            }
+        if (tgt_blk -> next != NULL)
+            {
+                block_header* temp = (tgt_blk -> next);
+                temp -> prev = tgt_blk->prev;
+            }
+        //if tgt_block is the starting blk in the heap -> update the heap header 
+        if (tgt_blk -> prev == NULL){
+            heap_head -> fst_block  = tgt_blk->next;
+        }
     }
 
-    //find a pointer to the block of memory for the return
+    //Find a pointer to the block of memory for the return
     void * alloc_block_addr = ADD_BYTES(tgt_blk, ALIGNMENT);
+
+    #ifdef PRINT_DEBUG
+        printf("heap starts at addr %p\n", heap);
+        printf("alloc_block_addr starts at  %p\n", alloc_block_addr);
+        printf("cur_blk_size is  %d\n", cur_blk_size);
+        printf("Min_size is  %d\n", Min_size);
+    #endif
 
     return alloc_block_addr;
 }
