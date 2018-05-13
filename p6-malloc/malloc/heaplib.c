@@ -258,6 +258,7 @@ void hl_release(void *heap, void *block) {
     if((unsigned long)block == ALIGN(heap)) return;
 
     // retrieve the pointer
+    heap_header* heap_head = (heap_header*)heap;
     block_header* block_free_hd = (block_header *)(ADD_BYTES(block, -ALIGNMENT));
     block_footer* block_free_ft = (block_header *)
         (ADD_BYTES(block, (block_free_hd -> block_size)-sizeof(block_footer)));
@@ -266,11 +267,20 @@ void hl_release(void *heap, void *block) {
     block_free_hd -> block_size = (block_free_hd -> block_size) & ~(1);
     block_free_ft -> block_size = block_free_hd -> block_size;
 
-    //link the freed block back to the list
+    //link the freed block back to the list and check freeness
+    // case 1: check head 
     block_footer* prev_footer = ADD_BYTES(block_free_hd, -sizeof(block_footer));
+    int is_prev_free = ((unsigned long)prev_footer <= ADD_BYTES(heap, sizeof(heap_header)))
+        ? 0 : IS_FREE(prev_footer-> block_size);
+
+    // case 2: check the footer
     block_header* next_header = ADD_BYTES(block_free_hd, (block_free_hd->block_size)); 
-    // check if the prev block is free (free = 1)
-    // int is_prev_free = 
+    int is_next_free = ((unsigned long)next_header >= heap_head -> heap_size) 
+         ? 0 : IS_FREE(next_header -> block_size);
+
+    //Coalescing blocks if needed
+     
+
 
 
     return;
