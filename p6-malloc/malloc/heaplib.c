@@ -48,18 +48,18 @@ printf("YOU input is: %d \n", a);
  * question. Returns BLOCK_NOT_FOUND if not found.
  *
  */
-typedef struct _heap_header{
+typedef struct {
     size_t heap_size; //size of the heap
     struct block_header* fst_block; // point to the first block in the heap
-} heap_header ;
+} heap_header;
 
-typedef struct _block_header {
+typedef struct {
     size_t block_size; //size of block (addre is 8-byte alligned)
     struct block_header* prev; //points to previous empty block
     struct block_header* next; //points to next empty block 
 } block_header;
 
-typedef struct _block_footer {
+typedef struct {
     size_t block_size; //size of block (addre is 8-byte alligned)
 } block_footer;
 

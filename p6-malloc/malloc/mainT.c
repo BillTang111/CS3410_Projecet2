@@ -7,7 +7,7 @@ int main(){
     algning(4); 
     // add_byte(4);
 
-    print_daaaaa(22);  
+    print_daaaaa(20);  
     print_ooooo(13);
     printf("\n This is the start !!!!!  \n");
 
