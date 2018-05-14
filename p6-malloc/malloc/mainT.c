@@ -8,7 +8,7 @@ int main(){
     // add_byte(4);
 
     print_daaaaa(20);  
-    print_ooooo(13);
+    print_ooooo(15);
     printf("\n This is the start !!!!!  \n");
 
     char heap[1240];
@@ -20,7 +20,8 @@ int main(){
 
     printf("\n hl_release +++ \n");
     hl_release(heap, alloc);
-    // printf("sizeof(size_t) is  %d\n", sizeof(size_t));
+    printf("sizeof(size_t) is  %d\n", sizeof(size_t));
+    printf("sizeof(unsigned int) is  %d\n", sizeof(unsigned long));
 
     // unsigned int mask = ~(1);
 

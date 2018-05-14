@@ -1,10 +1,10 @@
 #include "heaplib.h"
 #include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <stdbool.h>
-#include <stdint.h>
-#include <assert.h>
+// #include <stdio.h>
+// #include <string.h>
+// #include <stdbool.h>
+// #include <stdint.h>
+// #include <assert.h>
 
 
 /* This file implements four major functions by using the explicit list method 
@@ -49,18 +49,18 @@ printf("YOU input is: %d \n", a);
  *
  */
 typedef struct {
-    size_t heap_size; //size of the heap
+    unsigned long heap_size; //size of the heap
     struct block_header* fst_block; // point to the first block in the heap
 } heap_header;
 
 typedef struct {
-    size_t block_size; //size of block (addre is 8-byte alligned)
+    unsigned long block_size; //size of block (addre is 8-byte alligned)
     struct block_header* prev; //points to previous empty block
     struct block_header* next; //points to next empty block 
 } block_header;
 
 typedef struct {
-    size_t block_size; //size of block (addre is 8-byte alligned)
+    unsigned long block_size; //size of block (addre is 8-byte alligned)
 } block_footer;
 
 
@@ -93,9 +93,9 @@ void hl_init(void *heap, unsigned int heap_size) {
     //initialize the first block
     // block_header
     // avail size = heap_size - sizeof(block_header) - sizeof(block_footer) - |fst_blk_Align|
-    size_t size_available = (unsigned long)ADD_BYTES(heap_head, heap_size - sizeof(block_footer)) 
+    unsigned long size_available = (unsigned long)ADD_BYTES(heap_head, heap_size - sizeof(block_footer)) 
         - (unsigned long)ADD_BYTES(fst_blk_Align, sizeof(block_header));
-    size_t size_avai_aligned = size_available == ALIGN(size_available)?size_available : ALIGN(size_available)-ALIGNMENT;
+    unsigned long size_avai_aligned = size_available == ALIGN(size_available)?size_available : ALIGN(size_available)-ALIGNMENT;
     fst_blk_Align -> block_size = size_avai_aligned+sizeof(block_footer)+sizeof(block_header);
     fst_blk_Align -> prev = NULL;
     fst_blk_Align -> next = NULL;
@@ -119,10 +119,10 @@ void hl_init(void *heap, unsigned int heap_size) {
 /* ------------------- HELPER FUNCTIONS ----------------- */
 
 /*  Calculate the size of a block needed */
-size_t calc_needed_size (unsigned int payload_size){
-    size_t base_size = sizeof(block_header)+sizeof(block_footer);
+unsigned long calc_needed_size (unsigned int payload_size){
+    unsigned long base_size = sizeof(block_header)+sizeof(block_footer);
     //calculate the required size after aligning (2*ALIGNMENT for *prev and *next)
-    size_t needed_size = (size_t)(ALIGN(payload_size)+base_size-2*ALIGNMENT);
+    unsigned long needed_size = (unsigned long)(ALIGN(payload_size)+base_size-2*ALIGNMENT);
     if(needed_size < base_size){
         needed_size = base_size;
     }
@@ -132,10 +132,10 @@ size_t calc_needed_size (unsigned int payload_size){
 /*  Finded the first freed block that meets the required payload size*/
 block_header* find_block (block_header* lst_start, unsigned int payload_size){
     block_header* current_block = lst_start;
-    size_t size_needed = calc_needed_size(payload_size);
+    unsigned long size_needed = calc_needed_size(payload_size);
 
     while(current_block != NULL){
-        size_t current_size = lst_start -> block_size;
+        unsigned long current_size = lst_start -> block_size;
         if (size_needed > current_size){
             current_block = current_block -> next;
         }else{
@@ -177,15 +177,15 @@ void *hl_alloc(void *heap, unsigned int block_size) {
     if (tgt_blk == NULL){ return NULL; }
 
     //find this block's size
-    size_t cur_blk_size = tgt_blk -> block_size;
+    unsigned long cur_blk_size = tgt_blk -> block_size;
     //find the Minimum block size needed for "block_size"
-    size_t Min_size = calc_needed_size(block_size);
+    unsigned long Min_size = calc_needed_size(block_size);
 
     //Modify the memory
     //If the free block's size is greater than size we needed -> split the block
     if (cur_blk_size - Min_size > calc_needed_size(0)){
         //store the old block information for calcution reason
-        size_t old_size = tgt_blk->block_size;
+        unsigned long old_size = tgt_blk->block_size;
         block_footer* old_footer = (block_footer*) ADD_BYTES(tgt_blk, old_size - sizeof(block_footer));
 
         // update the header of tgt_block
@@ -291,18 +291,18 @@ void hl_release(void *heap, void *block) {
     if (is_prev_free && !is_next_free){
 
         //retrive the prev_block_header
-        size_t prev_blk_size = prev_footer -> block_size;
+        unsigned long prev_blk_size = prev_footer -> block_size;
         block_header* prev_block_header = (block_header*) ADD_BYTES(block_free_hd, - prev_blk_size);
         block_footer* next_footer = (block_footer *)ADD_BYTES(block_free_hd, (block_free_hd -> block_size) - sizeof(block_footer));
         //merge prev_block and update the size in header and footer
-        size_t new_size = prev_blk_size + (block_free_hd -> block_size);
+        unsigned long new_size = prev_blk_size + (block_free_hd -> block_size);
         prev_block_header -> block_size = new_size;
         next_footer -> block_size = new_size;
 
     }else if(!is_prev_free && is_next_free){
 
         //merge next_block and update the header and footer size
-        size_t new_size = block_free_hd -> block_size + next_header -> block_size;
+        unsigned long new_size = block_free_hd -> block_size + next_header -> block_size;
         block_free_hd -> block_size = new_size;
         block_footer* next_footer = 
             (block_footer*) ADD_BYTES(next_header, next_header -> block_size - sizeof(block_footer));
@@ -329,12 +329,12 @@ void hl_release(void *heap, void *block) {
 
     }else if (is_prev_free && is_next_free){
         //retrive the prev_block_header and next_footer
-        size_t prev_blk_size = prev_footer -> block_size;
+        unsigned long prev_blk_size = prev_footer -> block_size;
         block_header* prev_block_header = (block_header*)ADD_BYTES(block_free_hd, - prev_blk_size);
         block_footer* next_footer = (block_footer*)ADD_BYTES(next_header, next_header -> block_size - sizeof(block_footer));
 
         //merge next_block and update the header and footer size
-        size_t new_size = prev_block_header -> block_size + next_footer -> block_size + block_free_hd -> block_size;
+        unsigned long new_size = prev_block_header -> block_size + next_footer -> block_size + block_free_hd -> block_size;
         prev_block_header -> block_size = new_size;
         next_footer -> block_size = new_size;
 
@@ -396,9 +396,9 @@ void *hl_resize(void *heap, void *block, unsigned int new_size) {
     // void* result_pt = block; 
 
     // // get the minimum block size for the current block
-    // size_t new_block_size = calc_needed_size(new_size);
+    // unsigned long new_block_size = calc_needed_size(new_size);
     // // retrieve the old block size
-    // size_t block_size = (block_hd-> block_size)& ~(1);
+    // unsigned long block_size = (block_hd-> block_size)& ~(1);
 
     // // starting resize procedure
     // // case 1
