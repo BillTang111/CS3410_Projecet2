@@ -35,11 +35,6 @@ printf("YOU input is: %d \n", a);
 #endif
 }
 
-/* ------------------- HELPER FUNCTIONS ----------------- */
-
-/*  get the size of a block */
-
-
 /* ------------------- Model Structure  ----------------- */
 
 /* Given the heap header & a block address, finds the block in
@@ -114,6 +109,7 @@ void hl_init(void *heap, unsigned int heap_size) {
     return;
 }
 
+/* ------------------- HELPER FUNCTIONS ----------------- */
 
 /*  Calculate the size of a block needed */
 size_t calc_needed_size (unsigned int payload_size){
@@ -376,5 +372,34 @@ void hl_release(void *heap, void *block) {
 
 /* -------------------- hl_resize ----------------- */
 void *hl_resize(void *heap, void *block, unsigned int new_size) {
+    // // check constraints
+    // if(heap == NULL) return FAILURE;
+    // if(block == NULL) return hl_alloc(heap, new_size);
+    // // resizing the size 0 allocation 
+    // if(ALIGN(heap)==(unsigned long)block) return hl_alloc(heap, new_size);
+
+    // if(new_size == 0 ){
+    //     hl_release(heap,block);
+    //     return (void*)ALIGN(heap);
+    // }
+
+    // // acquire pointers
+    // block_header* block_hd = (block_header*)(ADD_BYTES(block,-sizeof(block_header)+2*ALIGNMENT));
+    // heap_header* heap = (heap_header*) heap;
+    // void* result_pt = block; 
+
+    // // get the minimum block size for the current block
+    // size_t new_block_size = calc_needed_size(new_size);
+    // // retrieve the old block size
+    // size_t block_size = (block_hd-> block_size)& ~(1);
+
+    // // starting resize procedure
+    // // case 1
+    // if(new_block_size == block_size) {return block;
+    // }else if(new_block_size < block_size) { 
+    // // case 2: split the block as hl_alloc did
+
+
+    // }
     return NULL;
 }
