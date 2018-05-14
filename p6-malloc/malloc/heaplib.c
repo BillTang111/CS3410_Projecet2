@@ -1,4 +1,11 @@
 #include "heaplib.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdbool.h>
+#include <stdint.h>
+#include <assert.h>
+
 
 /* This file implements four major functions by using the explicit list method 
  * with header and footer. This method uses bidirectional coalescing 
