@@ -1,512 +1,509 @@
+#include <stdlib.h>
+#include <stdio.h>
+#include <stdbool.h>
+#include <string.h>
 #include "heaplib.h"
-#include "random.h"
-#include "assert.h"
-#include "printf.h"
-
-typedef unsigned int uintptr_t;
-
-#define MAX(x, y) (((x) > (y)) ? (x) : (y))
-#define MIN(x, y) (((x) < (y)) ? (x) : (y))
 
 #define HEAP_SIZE 1024
 #define ARRAY_LEN 16
-#define NUM_TESTS 24
-#define NPOINTERS 100
+#define SMALL_BLOCK_SIZE 2
 
 // TODO: Add test descriptions as you add more tests...
-const char* test_descriptions[] = {
-    /* Given SPEC tests */
-    /* 0 */ "single init, should return without error",
-    /* 1 */ "single init then single alloc, should pass",
-    /* 2 */ "single alloc which should fail b/c heap is not big enough",
-    /* 3 */ "multiple allocs, verifying no hard-coded block limit",
-    /* Malloc Lab  tests */
-    /* 4  */ "alloc: block returned is aligned",
-    /* 5  */ "alloc: block returned is aligned even when heap is not",
-    /* 6  */ "free: acts like nop when block is NULL",
-    /* 7  */ "free: allows the block to be used again",
-    /* 8  */ "resize: acts like alloc when block is NULL",
-    /* Additional Spec tests */
-    /* 9  */ "resize: copies values",
-    /* 10 */ "EMPTY TEST",
-    /* 11 */ "EMPTY TEST",
-    /* 12 */ "EMPTY TEST",
-    /* 13 */ "EMPTY TEST",
-    /* 14 */ "EMPTY TEST",
-    /* 15 */ "EMPTY TEST",
-    /* Given STRESS tests */
-    /* 16 */ "alloc & free, stay within heap limits",
-    /* Additional STRESS tests */
-    /* 17 */ "EMPTY TEST",
-    /* 18 */ "EMPTY TEST",
-    /* 19 */ "EMPTY TEST",
-    /* 20 */ "EMPTY TEST",
-    /* 21 */ "EMPTY TEST",
-    /* 22 */ "EMPTY TEST",
-    /* 23 */ "EMPTY TEST",
-    /* Reserved autograder tests */
-    /* 24 */ "EMPTY TEST",
-    /* 25 */ "EMPTY TEST",
+const char* testDescriptions[] = {
+    "init: heap should be created when enough space",
+    "init: heap should not be created when not enough space",
+    "alloc: block should be allocated when enough space",
+    "alloc: block should not be allocated when not enough space",
+    "alloc: block returned is aligned"
 };
 
-/* ------------------ COMPLETED SPEC TESTS ------------------------- */
-
-/* THIS TEST IS COMPLETE AND WILL NOT BE INCOPORATED INTO YOUR GRADE.
- *
- * FUNCTIONS BEING TESTED: init
- * SPECIFICATION BEING TESTED:
- * hl_init should successfully complete (without producing a seg
- * fault) for a HEAP_SIZE of 1024 or more.
- *
- * MANIFESTATION OF ERROR:
- * A basic test of hl_init.  If hl_init has an eggregious programming
- * error, this simple call would detect the problem for you by
- * crashing.
- *
- * Note: this shows you how to create a test that should succeed.
- */
-int test00() {
-
-    // simulated heap is just a big array
-    char heap[HEAP_SIZE];
-
-    hl_init(heap, HEAP_SIZE);
-
-    return SUCCESS;
-}
-
-/* THIS TEST IS COMPLETE AND WILL NOT BE INCOPORATED INTO YOUR GRADE.
- *
- * FUNCTIONS BEING TESTED: init & alloc
- * SPECIFICATION BEING TESTED:
- * If there is room in the heap for a request for a block, hl_alloc
- * should sucessfully return a pointer to the requested block.
- *
- * MANIFESTATION OF ERROR:
- * The call to hl_alloc will return NULL if the library cannot find a
- * block for the user (even though the test is set up such that the
- * library should be able to succeed).
+/* Checks whether a "heap" is created when there IS enough space.
+ * THIS TEST IS COMPLETE.
  */
 int test01() {
 
-    // simulated heap is just a big array
     char heap[HEAP_SIZE];
 
-    hl_init(heap, HEAP_SIZE);
+    int heap_created_f = hl_init(heap, HEAP_SIZE);
 
-    return (hl_alloc(heap, HEAP_SIZE/2) != NULL);
+    if (heap_created_f) {
+        return SUCCESS;
+    }
+    return FAILURE;
 }
 
-/* THIS TEST IS COMPLETE AND WILL NOT BE INCOPORATED INTO YOUR GRADE.
- *
- * FUNCTIONS BEING TESTED: init & alloc
- * SPECIFICATION BEING TESTED:
- * If there is not enough room in the heap for a request for a block,
- * hl_alloc should return NULL.
- *
- * MANIFESTATION OF ERROR:
- * This test is designed to request a block that is definitely too big
- * for the library to find. If hl_alloc returns a pointer, the library is flawed.
- *
- * Notice that heaplame's hl_alloc does NOT return NULL. (This is one
- * of many bugs in heaplame.)
- *
- * Note: this shows you how to create a test that should fail.
- * Surely it would be a good idea to test this SPEC with more than
- * just 1 call to alloc, no?
+/* Checks whether a "heap" is created when there IS NOT enough space.
+ * THIS TEST IS NOT COMPLETE. heaplame.c does not pass this test. Feel free to fix it!
+ * Lab 12 TODO: COMPLETE THIS TEST!
  */
 int test02() {
 
-    // simulated heap is just an array
+    char heap[HEAP_SIZE];
+    
+    int heap_created_f = hl_init(heap, 1);
+    
+    if (heap_created_f == 0) {
+        return SUCCESS;
+    }
+    return FAILURE;
+}
+
+/* Checks whether a block can be allocated when there is enough space.
+ * THIS TEST IS NOT COMPLETE.
+ * Lab 12 TODO: COMPLETE THIS TEST!
+ */
+int test03() {
+
+    char heap[HEAP_SIZE];
+
+    hl_init(heap, HEAP_SIZE);
+    
+    void* block = hl_alloc(heap, ARRAY_LEN);
+    
+    if (block == NULL) {
+        return FAILURE;
+    }
+    return SUCCESS; 
+}
+
+/* Checks whether a block can be allocated when there is NOT enough space.
+ * THIS TEST IS COMPLETE. heaplame.c does not pass this test. Feel free to fix it!
+ */
+int test04() {
+
     char heap[HEAP_SIZE];
 
     hl_init(heap, HEAP_SIZE);
 
-    // if this returns NULL, test22 returns SUCCESS (==1)
-    return !hl_alloc(heap, HEAP_SIZE*2);
+    // should NOT work
+    void* block = hl_alloc(heap, ARRAY_LEN * HEAP_SIZE);
 
-}
-
-/* THIS TEST IS COMPLETE AND WILL NOT BE INCOPORATED INTO YOUR GRADE.
- *
- * FUNCTIONS BEING TESTED: init & alloc
- * SPECIFICATION BEING TESTED:
- * There should be no hard-coded limit to the number of blocks heaplib
- * can support. So if the heap gets larger, so should the number of
- * supported blocks.
- *
- * MANIFESTATION OF ERROR:
- * See how many blocks are supported with heap size N. This number should
- * increase with heap size 2N. Otherwise fail!
- *
- * Note: unless it is fundamentally changed, heaplame will always fail
- * this test. That is fine. The test will have more meaning when run on
- * your heaplib.c
- */
-int test03() {
-
-    // now we simulate 2 heaps, once 2x size of the first
-    char heap[HEAP_SIZE], heap2[HEAP_SIZE*2];
-    int num_blocks = 0;
-    int num_blocks2 = 0;
-
-    hl_init(heap, HEAP_SIZE);
-
-    while(true) {
-        int *array = hl_alloc(heap, 8);
-        if (array)
-            num_blocks++;
-        else
-            break;
+    if (block == NULL) {
+        return SUCCESS;
     }
-
-    hl_init(heap2, HEAP_SIZE*2);
-
-    while(true) {
-        int *array = hl_alloc(heap2, 8);
-        if (array)
-            num_blocks2++;
-        else
-            break;
-    }
-#ifdef PRINT_DEBUG
-    printf("%d blocks (n), then %d blocks (2n) allocated\n", num_blocks, num_blocks2);
-#endif
-
-    // hoping to return SUCCESS (==1)
-    return (num_blocks2 > num_blocks);
-}
-
-/* ------------------ YOUR SPEC TESTS ------------------------- */
-
-/* FUNCTIONS BEING TESTED: init, alloc
- * SPECIFICATION BEING TESTED:
- * alloc should return ptrs that are 8-byte aligned
- *
- * MANIFESTATION OF ERROR:
- */
-int test04() {
-
     return FAILURE;
 }
 
-/* FUNCTIONS BEING TESTED: init, alloc
- * SPECIFICATION BEING TESTED:
- * alloc should return ptrs that are 8-byte aligned
- * even when the heap is not 8-byte aligned
- *
- * MANIFESTATION OF ERROR:
+/* Checks whether hl_alloc returns a pointer that has the correct
+ * alignment.
+ * THIS TEST IS NOT COMPLETE. heaplame.c does not pass this test. Feel free to fix it!
+ * LAB 12 TODO: COMPLETE THIS TEST! (it is not robust)
  */
 int test05() {
 
-    return FAILURE;
+    char array[HEAP_SIZE];
+    char* ptr = array;
+
+    hl_init(array, HEAP_SIZE - 1);
+    
+    void* block1;
+    void* block2;
+    void* block3;
+    void* block4;
+    void* block5;
+    void* block6;
+    void* block7;
+    void* block8;
+    void* block9;
+    void* block10;
+    void* block11;
+    void* block12;
+    void* block13;
+    void* block14;
+    void* block15;
+    void* block16;
+    void* block17;
+    void* block18;
+    void* block19;
+    void* block20;
+    
+    block1 = hl_alloc(ptr, 1);
+    block2 = hl_alloc(ptr, 2); 
+    block3 = hl_alloc(ptr, 3); 
+    block4 = hl_alloc(ptr, 4);
+    block5 = hl_alloc(ptr, 5); 
+    block6 = hl_alloc(ptr, 6);
+    block7 = hl_alloc(ptr, 7);
+    block8 = hl_alloc(ptr, 8);
+    block9 = hl_alloc(ptr, 9);
+    block10 = hl_alloc(ptr, 10);
+    block11 = hl_alloc(ptr, 11);
+    block12 = hl_alloc(ptr, 12);
+    block13 = hl_alloc(ptr, 13);
+    block14 = hl_alloc(ptr, 14);
+    block15 = hl_alloc(ptr, 15);
+    block16 = hl_alloc(ptr, 16);
+    block17 = hl_alloc(ptr, 17);
+    block18 = hl_alloc(ptr, 18);
+    block19 = hl_alloc(ptr, 19);
+    block20 = hl_alloc(ptr, 20);
+    
+    bool aligned_1 = false;
+    bool aligned_2 = false;
+    bool aligned_3 = false;
+    bool aligned_4 = false;
+    bool aligned_5 = false;
+    bool aligned_6 = false;
+    bool aligned_7 = false;
+    bool aligned_8 = false;
+    bool aligned_9 = false;
+    bool aligned_10 = false;
+    bool aligned_11 = false;
+    bool aligned_12 = false;
+    bool aligned_13 = false;
+    bool aligned_14 = false;
+    bool aligned_15 = false;
+    bool aligned_16 = false;
+    bool aligned_17 = false;
+    bool aligned_18 = false;
+    bool aligned_19 = false;
+    bool aligned_20 = false;
+    
+    if (block1 != NULL) {
+    aligned_1 = !((unsigned long)block1 & (ALIGNMENT - 1));
+    if (!aligned_1) { return FAILURE;} }
+    if (block2 != NULL) {
+    aligned_2 = !((unsigned long)block2 & (ALIGNMENT - 1));
+    if (!aligned_2) { return FAILURE;} }
+    if (block3 != NULL) {
+    aligned_3 = !((unsigned long)block3 & (ALIGNMENT - 1));
+    if (!aligned_3) { return FAILURE;} }
+    if (block4 != NULL) {
+    aligned_4 = !((unsigned long)block4 & (ALIGNMENT - 1));
+    if (!aligned_4) { return FAILURE;} }
+    if (block5 != NULL) {
+    aligned_5 = !((unsigned long)block5 & (ALIGNMENT - 1));
+    if (!aligned_5) { return FAILURE;} }
+    if (block6 != NULL) {
+    aligned_6 = !((unsigned long)block6 & (ALIGNMENT - 1));
+    if (!aligned_6) { return FAILURE;} }
+    if (block7 != NULL) {
+    aligned_7 = !((unsigned long)block7 & (ALIGNMENT - 1));
+    if (!aligned_7) { return FAILURE;} }
+    if (block8 != NULL) {
+    aligned_8 = !((unsigned long)block8 & (ALIGNMENT - 1));
+    if (!aligned_8) { return FAILURE;} }
+    if (block9 != NULL) {
+    aligned_9 = !((unsigned long)block9 & (ALIGNMENT - 1));
+    if (!aligned_9) { return FAILURE;} }
+    if (block10 != NULL) {
+    aligned_10 = !((unsigned long)block10 & (ALIGNMENT - 1));
+    if (!aligned_10) { return FAILURE;} }
+    if (block11 != NULL) {
+    aligned_11 = !((unsigned long)block11 & (ALIGNMENT - 1));
+    if (!aligned_11) { return FAILURE;} }
+    if (block12 != NULL) {
+    aligned_12 = !((unsigned long)block12 & (ALIGNMENT - 1));
+    if (!aligned_12) { return FAILURE;} }
+    if (block13 != NULL) {
+    aligned_13 = !((unsigned long)block13 & (ALIGNMENT - 1));
+    if (!aligned_13) { return FAILURE;} }
+    if (block14 != NULL) {
+    aligned_14 = !((unsigned long)block14 & (ALIGNMENT - 1));
+    if (!aligned_14) { return FAILURE;} }
+    if (block15 != NULL) {
+    aligned_15 = !((unsigned long)block15 & (ALIGNMENT - 1));
+    if (!aligned_15) { return FAILURE;} }
+    if (block16 != NULL) {
+    aligned_16 = !((unsigned long)block16 & (ALIGNMENT - 1));
+    if (!aligned_16) { return FAILURE;} }
+    if (block17 != NULL) {
+    aligned_17 = !((unsigned long)block17 & (ALIGNMENT - 1));
+    if (!aligned_17) { return FAILURE;} }
+    if (block18 != NULL) {
+    aligned_18 = !((unsigned long)block18 & (ALIGNMENT - 1));
+    if (!aligned_18) { return FAILURE;} }
+    if (block19 != NULL) {
+    aligned_19 = !((unsigned long)block19 & (ALIGNMENT - 1));
+    if (!aligned_19) { return FAILURE;} }
+    if (block20 != NULL) {
+    aligned_20 = !((unsigned long)block20 & (ALIGNMENT - 1));
+    if (!aligned_20) { return FAILURE;} } 
+
+return SUCCESS;
 }
 
-/* FUNCTIONS BEING TESTED: free
- * SPECIFICATION BEING TESTED:
- * hl_release of zero acts as a nop
- *
- * MANIFESTATION OF ERROR:
- */
+/* Your test.
+ * Test whether hl_init() supports multiple heaps. 
+ * Also adds test case 2 to our multiple heap tests. */
 int test06() {
+    // create mutliple heaps and return FAILURE if the returned heapptrs are NULL
+    char heap[HEAP_SIZE];
+    int QUARTER_HEAPSIZE = HEAP_SIZE/4;
+    char* ptr1 = heap;
+    char* ptr2 = (char*) heap + QUARTER_HEAPSIZE;
+    char* ptr3 = (char*) heap + 2*QUARTER_HEAPSIZE;
+    char* ptr4 = (char*) heap + 3*QUARTER_HEAPSIZE;
+    
+    int heap_created_1 = hl_init(ptr1, QUARTER_HEAPSIZE);
+    int heap_created_2 = hl_init(ptr2, QUARTER_HEAPSIZE);
+    int heap_created_3 = hl_init(ptr3, QUARTER_HEAPSIZE);
+    int heap_created_4 = hl_init(ptr4, 1); // this init will fail b/c heap_size is too small
+    
+    if (heap_created_1 == 0 || heap_created_2 == 0 || heap_created_3 == 0) {
+        return FAILURE;
+    }
 
-    return FAILURE;
+    if (heap_created_4 != 0) {
+        return FAILURE;
+    }
+
+    return SUCCESS;
+
 }
 
-#define NPOINTERS3 5
-
-/* FUNCTIONS BEING TESTED: free
- * SPECIFICATION BEING TESTED: freed blocks should be allocatable again
- *
- *
- * MANIFESTATION OF ERROR:
- *
+/* Your test.
+ * test if hl_release works robustly.
  */
 int test07() {
+    
+    char heap[HEAP_SIZE];
 
-    return FAILURE;
+    hl_init(heap, HEAP_SIZE);
+    void* blockptr;
+    void* first_block = hl_alloc(heap, sizeof(char));
+    
+    // allocate space until full
+    while (1) {
+        blockptr = hl_alloc(heap, sizeof(char));
+        if (blockptr == NULL) {
+            break;
+        }
+    }
+    
+    // release the first block and alloc
+    hl_release(heap, first_block);
+    
+    if (hl_alloc(heap, sizeof(char)) == NULL) {
+        return FAILURE;
+    }
+    
+    // test that hl_release() does nothing when blockptr is zero
+    hl_release(heap, 0);
+    if (hl_alloc(heap, sizeof(char)) != NULL) {
+        return FAILURE;
+    }
+
+    return SUCCESS;
 
 }
 
-/* FUNCTIONS BEING TESTED: resize
- * SPECIFICATION BEING TESTED:
- * hl_resize acts as hl_alloc when it's passed a null blk_ptr
- *
- *
- * MANIFESTATION OF ERROR:
+/* Your test.
+ * test if resize behaves as expected when the heap has enough space.
+ * 
  */
 int test08() {
+    char heap[HEAP_SIZE];
+    hl_init(heap, HEAP_SIZE);
+    
+    void* blockptr = hl_alloc(heap, ARRAY_LEN); // correct???
+    char* charptr = (char*) blockptr;
 
-    return FAILURE;
+    for (int i=0; i<ARRAY_LEN; i++) {
+        charptr[i] = 'q';
+    }
 
-}
-
-/* FUNCTIONS BEING TESTED: resize
- * SPECIFICATION BEING TESTED:
- * should copy over the values from its memory area when resizing
- *
- * MANIFESTATION OF ERROR:
- */
-int test09() {
-
-    return FAILURE;
-}
-
-/* Find something that you think heaplame does wrong. Make a test
- * for that thing!
- *
- * FUNCTIONS BEING TESTED:
- * SPECIFICATION BEING TESTED:
- *
- *
- * MANIFESTATION OF ERROR:
- *
- */
-int test10() {
-
-    return FAILURE;
-}
-
-/* Find something that you think heaplame does wrong. Make a test
- * for that thing!
- *
- * FUNCTIONS BEING TESTED:
- * SPECIFICATION BEING TESTED:
- *
- *
- * MANIFESTATION OF ERROR:
- *
- */
-int test11() {
-
-    return FAILURE;
-}
-
-/* Find something that you think heaplame does wrong. Make a test
- * for that thing!
- *
- * FUNCTIONS BEING TESTED:
- * SPECIFICATION BEING TESTED:
- *
- *
- * MANIFESTATION OF ERROR:
- *
- */
-int test12() {
-
-    return FAILURE;
-}
-
-/* Find something that you think heaplame does wrong. Make a test
- * for that thing!
- *
- * FUNCTIONS BEING TESTED:
- * SPECIFICATION BEING TESTED:
- *
- *
- * MANIFESTATION OF ERROR:
- *
- */
-int test13() {
-
-    return FAILURE;
-}
-
-/* Find something that you think heaplame does wrong. Make a test
- * for that thing!
- *
- * FUNCTIONS BEING TESTED:
- * SPECIFICATION BEING TESTED:
- *
- *
- * MANIFESTATION OF ERROR:
- *
- */
-int test14() {
-
-    return FAILURE;
-}
-
-/* Find something that you think heaplame does wrong. Make a test
- * for that thing!
- *
- * FUNCTIONS BEING TESTED:
- * SPECIFICATION BEING TESTED:
- *
- *
- * MANIFESTATION OF ERROR:
- *
- */
-int test15() {
-
-    return FAILURE;
-}
-
-/* ------------------ STRESS TESTS ------------------------- */
-
-/* FUNCTIONS BEING TESTED: alloc, free
- * SPECIFICATION BEING TESTED:
- * The library should not give user "permission" to write off the end
- * of the heap. Nor should the library ever write off the end of the heap.
- *
- * MANIFESTATION OF ERROR:
- * If we track the data on each end of the heap, it should never be
- * written to by the library or a good user.
- *
- */
-int test16() {
-    int n_tries    = 10000;
-    int block_size = 16;
-
-    // 1024 bytes of padding
-    // --------------------
-    // 1024 bytes of "heap"
-    // --------------------  <-- heap_start
-    // 1024 bytes of "padding"
-    char memarea[HEAP_SIZE*3];
-
-    char *heap_start = &memarea[1024]; // heap will start 1024 bytes in
-    char *pointers[NPOINTERS];
-
-    // zero out the pointer array
-    memset(pointers, 0, NPOINTERS*sizeof(char *));
-
-	char *before = memarea;
-	char *after = &memarea[2048];
-
-	// zero out the buffers before and after
-	memset(before, 0, NPOINTERS*sizeof(char *));
-	memset(after, 0, NPOINTERS*sizeof(char *));
-
-	for (int i = 0; i < NPOINTERS; i++) {
-		before[i] = 'b';
-		after[i] = 'a';
-	}
-
-    hl_init(heap_start, HEAP_SIZE);
-    srandom(0);
-    for (int i = 0; i < n_tries; i++) {
-        int index = random() % NPOINTERS;
-        if (pointers[index] == 0) {
-            pointers[index] = hl_alloc(heap_start,  block_size);
+    // resize block to a larger block size
+    blockptr = hl_resize(heap, blockptr, 2*ARRAY_LEN);
+    char* charptr2 = (char*) blockptr;
+    if (blockptr == NULL) {
+        return FAILURE;
+    }
+    
+    // check each element to see if data are preserved
+    for (int i=0; i<ARRAY_LEN; i++) {
+        if (charptr2[i] != 'q') {
+            return FAILURE;
         }
-        else{
-            hl_release(heap_start, pointers[index]);
-            pointers[index] = 0;
+    }
+    
+    // if I can write beyond ARRAY_LEN
+    for (int i=ARRAY_LEN; i<2*ARRAY_LEN; i++) {
+        charptr2[i] = 'z';
+    }
+
+    // resize to original size
+    blockptr = hl_resize(heap, blockptr, ARRAY_LEN);
+    char* charptr3 = (char*) blockptr;
+    if (blockptr == NULL) {
+        return FAILURE;
+    }
+
+    // check each element to see if data are preserved
+    for (int i=0; i<ARRAY_LEN; i++) {
+        if (charptr3[i] != 'q') {
+            return FAILURE;
         }
     }
 
-	for (int i = 0; i < NPOINTERS; i++) {
-		assert(before[i] == 'b');
-		assert(after[i] == 'a');
-	}
+    // resize to a smaller size, should return a non-NULL block pointer
+    blockptr = hl_resize(heap, blockptr, SMALL_BLOCK_SIZE);
+    if (blockptr == NULL) {
+        return FAILURE;
+    }
+
+    return SUCCESS;
+
+}
+
+/* Your test.
+ * test if hl_resize behaves as expected when the heap does not have enough space
+ */
+int test09() {
+    char heap[HEAP_SIZE];
+    hl_init(heap, HEAP_SIZE);
+    
+    void* blockptr = hl_alloc(heap, ARRAY_LEN);
+    blockptr = hl_resize(heap, blockptr, HEAP_SIZE*HEAP_SIZE);
+
+    // blockptr should be NULL because new block size is too large
+    if (blockptr == NULL) {
+        return SUCCESS;
+    }
+    return FAILURE;
+}
+
+/* Your test.
+ * test corner cases when block size and block pointer are zero for hl_alloc()
+ */
+int test10() {
+    char heap[HEAP_SIZE];
+    hl_init(heap, HEAP_SIZE);
+    
+    // blockptr should not be NULL
+    void* blockptr = hl_alloc(heap, 0);
+    if (blockptr == NULL) {
+        return FAILURE;
+    }
+
+    // blockptr should be 8-byte aligned
+    bool aligned = false;
+    aligned = !((unsigned long)blockptr & (ALIGNMENT - 1));
+    if (!aligned) {
+        return FAILURE;
+    }
+    
+    hl_release(heap, blockptr);
+    blockptr = hl_alloc(heap, 0);
+
+    // resize the block of size from 0 to 2*ARRAY_LEN
+    void* blockptr_double = hl_resize(heap, blockptr, 2*ARRAY_LEN);
+    if (blockptr_double == NULL) {
+        return FAILURE;
+    }
+    bool aligned_double = false;
+    aligned_double = !((unsigned long)blockptr_double & (ALIGNMENT - 1));
+    if (!aligned_double) {
+        return FAILURE;
+    }
+    char* charptr = (char*) blockptr_double;
+    // store data onto the heap
+    for (int i=0; i<ARRAY_LEN; i++) {
+        charptr[i] = 'q';
+    }
+    
+    // resize the block to size of ARRAY_LEN
+    void* blockptr_arraylen = hl_resize(heap, blockptr_double, ARRAY_LEN);
+    if (blockptr_arraylen == NULL) {
+        return FAILURE;
+    }
+    bool aligned_arraylen = false;
+    aligned_arraylen = !((unsigned long)blockptr_arraylen & (ALIGNMENT - 1));
+    if (!aligned_arraylen) {
+        return FAILURE;
+    }
+    // check if data are preserved
+    char* charptr2 = (char*) blockptr_arraylen;
+    for (int i=0; i<ARRAY_LEN; i++) {
+        if (charptr2[i] != 'q') {
+            return FAILURE;
+        }
+    }
+
+    hl_release(heap, blockptr_arraylen);
+
+    return SUCCESS;
+
+}
+
+/* Your test.
+ * test if hl_resize() works like hl_alloc() when block pointer is zero
+ */
+int test11() {
+    char heap[HEAP_SIZE];
+    hl_init(heap, HEAP_SIZE);
+    void* blockptr = hl_resize(heap, NULL, ARRAY_LEN);
+    void* blockptr2 = hl_resize(heap, NULL, HEAP_SIZE * 2);
+    
+    if (blockptr == NULL) {
+        return FAILURE;
+    }
+    if(blockptr2 != NULL) {
+        return FAILURE;
+    }
+
+    bool aligned = false;
+    aligned = !((unsigned long) blockptr & (ALIGNMENT - 1));
+    if (!aligned) {
+        return FAILURE;
+    }
+    
+    hl_release(heap, blockptr); 
+    hl_release(heap, blockptr2);
+    hl_release(heap, 0);
+    
+    blockptr = hl_resize(heap, NULL, ARRAY_LEN);
+    blockptr2 = hl_resize(heap, NULL, HEAP_SIZE * 2);
+    
+    if (blockptr == NULL) {
+        return FAILURE;
+    }
+    if(blockptr2 != NULL) {
+        return FAILURE;
+    }
+    aligned = !((unsigned long) blockptr & (ALIGNMENT - 1));
+    if (!aligned) {
+        return FAILURE;
+    }   
+    return SUCCESS;
+}
+
+/* Your test.
+ */
+int test12() {
+
+    // check on a heap not 8-byte aligned
+    char heap2[HEAP_SIZE];
+    char* heapptr_not_aligned = (char*)heap2 + 3;
+    hl_init(heapptr_not_aligned, HEAP_SIZE/3 + 1);
+
+    void* blockptr2 = hl_alloc(heapptr_not_aligned, 0);
+    blockptr2 = hl_resize(heapptr_not_aligned, blockptr2, ARRAY_LEN - 1);
+    bool aligned2 = false;
+    aligned2 = !((unsigned long) blockptr2 & (ALIGNMENT - 1));
+    if (!aligned2) {
+        return FAILURE;
+    }
+    
+    // check on a heap not 8-byte aligned, passing hl_alloc() a nonzero block size
+    char heap3[HEAP_SIZE];
+    char* heapptr_not_aligned_2 = (char*)heap3 + 5;
+    hl_init(heapptr_not_aligned_2, HEAP_SIZE/3 + 2);
+
+    void* blockptr3 = hl_alloc(heapptr_not_aligned_2, ARRAY_LEN + 3);
+    bool aligned3 = false;
+    aligned3 = !((unsigned long) blockptr3 & (ALIGNMENT - 1));
+    if (!aligned3) {
+        return FAILURE;
+    }
 
     return SUCCESS;
 }
 
-struct info {
-    void *ptr;
-    int size;
-    char seed;
-} info[NPOINTERS];
-
-struct info3 {
-    void *ptr;
-    int size;
-    char seed;
-} info3[NPOINTERS];
-
-/* Fill chunk of memory with content.
-*/
-static inline void fill(char *p, int size, char initial) {
-    int i;
-    for (i = 0; i < size; ++i) {
-        *p++ = initial++;
-    }
-}
-
-/* Verify the data in a memory with the content
+/* Your test.
  */
-static inline int verify(char *p, int size, char initial) {
-    int i;
-    for (i = 0; i < size; ++i) {
-        if (*p++ != initial++) {
-            return false;
-        }
-    }
-    return true;
-}
+int test13() {
 
-/* FUNCTIONS BEING TESTED: alloc, free
- * SPECIFICATION BEING TESTED:alloc & free integrity test,
- * MANIFESTATION OF ERROR:
- *
- */
-int test17() {
-    return FAILURE;
-}
+    return SUCCESS;
 
-/* FUNCTIONS BEING TESTED: alloc, free, resize
- * SPECIFICATION BEING TESTED:alloc, free, & resize integrity test
- * MANIFESTATION OF ERROR:
- *
- */
-int test18() {
-    
-    return FAILURE;
-}
-
-/* FUNCTIONS BEING TESTED: alloc, free
- * SPECIFICATION BEING TESTED:alloc & free data integrity test,
- * MANIFESTATION OF ERROR:
- *
- */
-int test19() {
-    
-    return FAILURE;
-}
-
-int test20() {
-    
-    return FAILURE;
-}
-/* FUNCTIONS BEING TESTED: alloc, free, resize
- * SPECIFICATION BEING TESTED:alloc, free, resize - a lot of times
- * MANIFESTATION OF ERROR:
- *
- */
-int test21() {
-    
-    return FAILURE;
-}
-
-/* FUNCTIONS BEING TESTED: 
- * SPECIFICATION BEING TESTED:
- * MANIFESTATION OF ERROR:
- *
- */
-int test22() {
-
-    return FAILURE;
-}
-
-/* FUNCTIONS BEING TESTED: 
- * SPECIFICATION BEING TESTED:
- * MANIFESTATION OF ERROR:
- *
- */
-int test23() {
-
-    return FAILURE;
-}
-
-/* RESERVED FOR AUTOGRADER */
-
-int test24() {
-
-    return FAILURE;
-}
-int test25() {
-
-    return FAILURE;
 }
