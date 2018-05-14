@@ -14,7 +14,7 @@ typedef int bool;
 #include "printf.h"
 #include "assert.h"
 #include "spinlock.h"
-// #include "null.h"
+#include "null.h"
 
 
 /* Sets up a new heap beginning at 'heap' of size 'heap_size' (in

@@ -1,11 +1,4 @@
 #include "heaplib.h"
-#include <stdlib.h>
-// #include <stdio.h>
-// #include <string.h>
-// #include <stdbool.h>
-// #include <stdint.h>
-// #include <assert.h>
-
 
 /* This file implements four major functions by using the explicit list method 
  * with header and footer. This method uses bidirectional coalescing 
@@ -88,7 +81,7 @@ void hl_init(void *heap, unsigned int heap_size) {
     void* fst_blk_unAlign = ADD_BYTES(heap_head, sizeof(heap_header));
     unsigned long offset = ALIGN(fst_blk_unAlign) - (unsigned long)fst_blk_unAlign;
     block_header* fst_blk_Align = (block_header *)(ADD_BYTES(heap_head, sizeof(heap_header) + offset));
-    heap_head -> fst_block = fst_blk_Align;
+    heap_head -> fst_block = (block_header*)fst_blk_Align;
 
     //initialize the first block
     // block_header
@@ -272,7 +265,7 @@ void hl_release(void *heap, void *block) {
     // indicating the block is freed (update the last bit)
     block_free_hd -> block_size = (block_free_hd -> block_size) & ~(1);
 
-    block_footer* block_free_ft = (block_header *)
+    block_footer* block_free_ft = (block_footer *)
         (ADD_BYTES(block, (block_free_hd -> block_size)-sizeof(block_footer)));
     block_free_ft -> block_size = block_free_hd -> block_size;
 

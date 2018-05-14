@@ -8,7 +8,7 @@ int main(){
     // add_byte(4);
 
     print_daaaaa(20);  
-    print_ooooo(15);
+    print_ooooo(13);
     printf("\n This is the start !!!!!  \n");
 
     char heap[1240];
