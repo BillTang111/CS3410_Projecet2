@@ -75,7 +75,7 @@ void hl_init(void *heap, unsigned int heap_size) {
     //check the constraints 
     if(heap_size < MIN_HEAP_SIZE || !heap){
         printf("Ahh, your input heap_size is wrong \n");
-        return NULL;
+        return;
     }
 
     // start setting up the heap
@@ -104,10 +104,10 @@ void hl_init(void *heap, unsigned int heap_size) {
 
     #ifdef PRINT_DEBUG
         printf("heap starts at addr %p\n", heap);
-        printf("block_header_size is  %d\n", sizeof(block_header));
+        // printf("block_header_size is  %d\n", sizeof(block_header));
         printf("first_block starts at  %p\n", fst_blk_Align);
-        printf("size_avai_aligned is  %d\n", size_avai_aligned);
-        printf("block size is  %d\n", fst_blk_Align -> block_size);
+        // printf("size_avai_aligned is  %d\n", size_avai_aligned);
+        // printf("block size is  %d\n", fst_blk_Align -> block_size);
         printf("fst_blk_footer is  %p\n", fst_blk_footer);
     #endif
 
@@ -142,6 +142,23 @@ block_header* find_block (block_header* lst_start, unsigned int payload_size){
     return NULL;
 } 
 
+/* Insert the newly freed block by address order. */
+block_header *insert(block_header *new_blk, block_header *head){
+
+	if(new_blk == NULL) return head;
+	if(head == NULL){
+		new_blk -> prev = NULL;
+		new_blk -> next = NULL;
+		return new_blk;
+	}
+	block_header *new_head = new_blk;
+    new_blk -> next = head;
+    new_blk -> prev = NULL; 
+	head -> prev = new_blk;
+
+    return new_head;
+}
+
 /* -------------------- hl_alloc ----------------- */
 void *hl_alloc(void *heap, unsigned int block_size) {
 
@@ -166,7 +183,7 @@ void *hl_alloc(void *heap, unsigned int block_size) {
     if (cur_blk_size - Min_size > calc_needed_size(0)){
         //store the old block information for calcution reason
         size_t old_size = tgt_blk->block_size;
-        block_footer* old_footer = ADD_BYTES(tgt_blk, old_size - sizeof(block_footer));
+        block_footer* old_footer = (block_footer*) ADD_BYTES(tgt_blk, old_size - sizeof(block_footer));
 
         // update the header of tgt_block
         tgt_blk -> block_size = Min_size;
@@ -174,11 +191,11 @@ void *hl_alloc(void *heap, unsigned int block_size) {
         tgt_blk -> block_size = tgt_blk -> block_size | 1;
 
         //create a footer for this newly allocated block
-        block_footer* tgt_blk_footer = ADD_BYTES(tgt_blk, Min_size-sizeof(block_footer));
+        block_footer* tgt_blk_footer = (block_footer*) ADD_BYTES(tgt_blk, Min_size-sizeof(block_footer));
         tgt_blk_footer -> block_size = tgt_blk -> block_size;
 
         //create a new header for the free splitted block;
-        block_header* splt_header = ADD_BYTES(tgt_blk, Min_size);
+        block_header* splt_header = (block_header*) ADD_BYTES(tgt_blk, Min_size);
         splt_header -> block_size = old_size - Min_size;
         splt_header -> prev = tgt_blk -> prev;
         splt_header -> next = tgt_blk -> next;
@@ -204,7 +221,7 @@ void *hl_alloc(void *heap, unsigned int block_size) {
         }
     }else{ //No need to split; just remove the tgt_blk from the free block list
         //inidicating no free anymore
-        block_footer* footer = ADD_BYTES(tgt_blk, (tgt_blk -> block_size) - sizeof(block_footer));
+        block_footer* footer = (block_footer*) ADD_BYTES(tgt_blk, (tgt_blk -> block_size) - sizeof(block_footer));
         tgt_blk -> block_size = tgt_blk -> block_size | 1;
         footer -> block_size = tgt_blk -> block_size;
 
@@ -231,28 +248,16 @@ void *hl_alloc(void *heap, unsigned int block_size) {
     #ifdef PRINT_DEBUG
         printf("heap starts at addr %p\n", heap);
         printf("alloc_block_addr starts at  %p\n", alloc_block_addr);
-        printf("cur_blk_size is  %d\n", cur_blk_size);
-        printf("Min_size is  %d\n", Min_size);
+        // printf("cur_blk_size is  %d\n", cur_blk_size);
     #endif
 
     return alloc_block_addr;
 }
 
-/* Releases the block of previously allocated memory pointed to by
- * block (which currently resides in the heap pointed to by
- * heap). Acts as a NOP if block == 0.
- *
- * PRECONDITIONS:
- * (1) block must have been returned to the user from a prior
- * call to hl_alloc or hl_resize
- * (2) hl_release can only be called ONCE in association with that
- * prior call to hl_alloc or hl_resize
- * If preconditions are violated, non-graceful failure is acceptable.
- */
 /* -------------------- hl_release ----------------- */
 void hl_release(void *heap, void *block) {
     // check constraint 
-    if (block == NULL){return;}
+    if (block == NULL) return;
 
     // releasing a previous allocaiton -> do nothing
     if((unsigned long)block == ALIGN(heap)) return;
@@ -260,32 +265,116 @@ void hl_release(void *heap, void *block) {
     // retrieve the pointer
     heap_header* heap_head = (heap_header*)heap;
     block_header* block_free_hd = (block_header *)(ADD_BYTES(block, -ALIGNMENT));
+
+    // indicating the block is freed (update the last bit)
+    block_free_hd -> block_size = (block_free_hd -> block_size) & ~(1);
+
     block_footer* block_free_ft = (block_header *)
         (ADD_BYTES(block, (block_free_hd -> block_size)-sizeof(block_footer)));
-
-    // indicating the block is freed
-    block_free_hd -> block_size = (block_free_hd -> block_size) & ~(1);
     block_free_ft -> block_size = block_free_hd -> block_size;
 
     //link the freed block back to the list and check freeness
-    // case 1: check head 
-    block_footer* prev_footer = ADD_BYTES(block_free_hd, -sizeof(block_footer));
-    int is_prev_free = ((unsigned long)prev_footer <= ADD_BYTES(heap, sizeof(heap_header)))
+    // check head 
+    block_footer* prev_footer = (block_footer*) ADD_BYTES(block_free_hd, -sizeof(block_footer));
+    int is_prev_free = ((unsigned long)prev_footer <= (unsigned long)ADD_BYTES(heap, sizeof(heap_header)))
         ? 0 : IS_FREE(prev_footer-> block_size);
 
-    // case 2: check the footer
-    block_header* next_header = ADD_BYTES(block_free_hd, (block_free_hd->block_size)); 
+    // check the footer
+    block_header* next_header = (block_header*)ADD_BYTES(block_free_hd, (block_free_hd->block_size)); 
     int is_next_free = ((unsigned long)next_header >= heap_head -> heap_size) 
          ? 0 : IS_FREE(next_header -> block_size);
 
-    //Coalescing blocks if needed
-     
+    //Coalescing blocks if needed (is_x_free = 1): 4 cases
+    if (is_prev_free && !is_next_free){
 
+        //retrive the prev_block_header
+        size_t prev_blk_size = prev_footer -> block_size;
+        block_header* prev_block_header = (block_header*) ADD_BYTES(block_free_hd, - prev_blk_size);
+        block_footer* next_footer = (block_footer *)ADD_BYTES(block_free_hd, (block_free_hd -> block_size) - sizeof(block_footer));
+        //merge prev_block and update the size in header and footer
+        size_t new_size = prev_blk_size + (block_free_hd -> block_size);
+        prev_block_header -> block_size = new_size;
+        next_footer -> block_size = new_size;
 
+    }else if(!is_prev_free && is_next_free){
 
-    return;
+        //merge next_block and update the header and footer size
+        size_t new_size = block_free_hd -> block_size + next_header -> block_size;
+        block_free_hd -> block_size = new_size;
+        block_footer* next_footer = 
+            (block_footer*) ADD_BYTES(next_header, next_header -> block_size - sizeof(block_footer));
+        next_footer -> block_size = new_size;
+
+        // update the dependencies
+        block_free_hd -> prev = next_header -> prev;
+        block_free_hd -> next = next_header -> next;
+
+        if (next_header -> prev != NULL)
+            {
+                block_header* temp = (next_header -> prev);
+                temp -> next = block_free_hd;
+            }
+        if (next_header -> next != NULL)
+            {
+                block_header* temp = (next_header -> next);
+                temp -> prev = block_free_hd;
+            }
+        //update the heap header 
+        if (next_header -> prev == NULL){
+            heap_head -> fst_block  = block_free_hd;
+        }
+
+    }else if (is_prev_free && is_next_free){
+        //retrive the prev_block_header and next_footer
+        size_t prev_blk_size = prev_footer -> block_size;
+        block_header* prev_block_header = (block_header*)ADD_BYTES(block_free_hd, - prev_blk_size);
+        block_footer* next_footer = (block_footer*)ADD_BYTES(next_header, next_header -> block_size - sizeof(block_footer));
+
+        //merge next_block and update the header and footer size
+        size_t new_size = prev_block_header -> block_size + next_footer -> block_size + block_free_hd -> block_size;
+        prev_block_header -> block_size = new_size;
+        next_footer -> block_size = new_size;
+
+        // update external dependencies
+        if(prev_block_header -> prev != NULL){
+            block_header* temp = (prev_block_header -> prev);
+    		temp -> next = prev_block_header -> next;
+        }else{ 
+    		heap_head -> fst_block = prev_block_header -> next;
+        }
+
+    	if(prev_block_header -> next != NULL){
+            block_header* temp = (prev_block_header -> next);
+    		temp -> prev = prev_block_header -> prev;
+        }
+
+    	if(next_header -> prev != NULL){ 
+            block_header* temp = (next_header -> prev);
+    		temp -> next = next_header -> next;
+        }else{ 
+    		heap_head -> fst_block = next_header -> next;
+        }
+
+        if (next_header -> next != NULL){
+                block_header* temp = (next_header -> next);
+                temp -> prev = next_header->prev;
+            }
+        
+        // insert the new block at the root of the list
+        heap_head -> fst_block = insert(prev_block_header, heap_head -> fst_block);
+
+    }else{
+        heap_head -> fst_block = insert(block_free_hd, heap_head-> fst_block);
+    }
+
+    #ifdef PRINT_DEBUG
+        printf("heap_head -> fst_block starts at addr %p\n", heap_head -> fst_block);
+        printf("block_free_hd starts at  %p\n", block_free_hd);
+    #endif
+
 }
 
+/* -------------------- hl_resize ----------------- */
 void *hl_resize(void *heap, void *block, unsigned int new_size) {
     return NULL;
 }

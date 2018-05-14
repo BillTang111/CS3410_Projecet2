@@ -8,13 +8,18 @@ int main(){
     // add_byte(4);
 
     print_daaaaa(22);  
-    print_ooooo(8);
+    print_ooooo(10);
     printf("\n This is the start !!!!!  \n");
 
-    char heap[1300];
-    hl_init(heap, 1300);
+    char heap[1240];
+    printf("\n hl_init +++ \n");
+    hl_init(heap, 1240);
 
+    printf("\n hl_alloc +++ \n");
     void* alloc = hl_alloc(heap, 105);
+
+    printf("\n hl_release +++ \n");
+    hl_release(heap, alloc);
     // printf("sizeof(size_t) is  %d\n", sizeof(size_t));
 
     // unsigned int mask = ~(1);
