@@ -217,6 +217,9 @@ void *hl_alloc_helper(void *heap, unsigned int block_size) {
     block_header* tgt_blk = find_block (list_head, block_size);
     if (tgt_blk == NULL){ return NULL; }
 
+    //get the pointer pointing to the beginning of the data section
+    void* alloc_block_addr = (void *)ADD_BYTES(tgt_blk, sizeof(block_header) - 2*ALIGNMENT);
+
     //find this block's size
     unsigned long cur_blk_size = tgt_blk -> block_size;
     //find the Minimum block size needed for "block_size"
@@ -285,9 +288,6 @@ void *hl_alloc_helper(void *heap, unsigned int block_size) {
             heap_head -> fst_block  = tgt_blk->next;
         }
     }
-
-    //Find a pointer to the block of memory (data section) for the return
-    void * alloc_block_addr = ADD_BYTES(tgt_blk, ALIGNMENT);
 
     #ifdef PRINT_DEBUG
         printf("heap starts at addr %p\n", heap);
