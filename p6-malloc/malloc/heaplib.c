@@ -92,6 +92,7 @@ void hl_init(void *heap, unsigned int heap_size) {
 
     // start setting up the heap
     heap_header* heap_head = (heap_header*) heap;
+    
     heap_head -> heap_size = heap_size;
 
     //calc the first block starting point after the heap_header
@@ -347,19 +348,16 @@ void hl_release_helper(void *heap, void *block) {
         block_free_hd -> prev = next_header -> prev;
         block_free_hd -> next = next_header -> next;
 
-        if (next_header -> prev != NULL)
-            {
-                block_header* temp = (next_header -> prev);
-                temp -> next = block_free_hd;
-            }
         if (next_header -> next != NULL)
             {
                 block_header* temp = (next_header -> next);
                 temp -> prev = block_free_hd;
             }
-        //update the heap header 
-        if (next_header -> prev == NULL){
-            heap_head -> fst_block  = block_free_hd;
+        if (next_header -> prev != NULL){
+                block_header* temp = (next_header -> prev);
+                temp -> next = block_free_hd;
+        }else{
+                heap_head -> fst_block  = block_free_hd;
         }
 
     }else if (is_prev_free && is_next_free){
