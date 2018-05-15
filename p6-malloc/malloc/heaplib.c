@@ -56,6 +56,10 @@ typedef struct block_footer{
     unsigned long block_size; //size of block (addre is 8-byte alligned)
 } block_footer;
 
+/* Given an unaligned pointer, how much offset do we need to make it aligned*/
+unsigned int get_align_offset(void* ptr){
+	return (unsigned int)(ALIGN(ptr) - (unsigned long)ptr);
+}
 
 /* -------------------- THE BIG FOUR FNS ----------------- */
 /* See the .h for the advertised behavior of this library function.
@@ -82,8 +86,11 @@ void hl_init(void *heap, unsigned int heap_size) {
     heap_head -> heap_size = heap_size;
 
     //calc the first block starting point after the heap_header
-    void* fst_blk_unAlign = ADD_BYTES(heap_head, sizeof(heap_header));
-    unsigned long offset = ALIGN(fst_blk_unAlign) - (unsigned long)fst_blk_unAlign;
+    // void* fst_blk_unAlign = ADD_BYTES(heap_head, sizeof(heap_header));
+    // unsigned int offset = (unsigned int)(ALIGN(fst_blk_unAlign) - (unsigned long)fst_blk_unAlign);
+
+    unsigned int offset = get_align_offset(ADD_BYTES(heap_head, sizeof(heap_header) + sizeof(block_header)));
+
     block_header* fst_blk_Align = (block_header *)(ADD_BYTES(heap_head, sizeof(heap_header) + offset));
     heap_head -> fst_block = (block_header*)fst_blk_Align;
 
@@ -153,8 +160,10 @@ block_header *insert(block_header *new_blk, block_header *head){
 	}
 	block_header *new_head = new_blk;
     new_blk -> next = head;
-    new_blk -> prev = NULL; 
-	head -> prev = new_blk;
+    new_blk -> prev = NULL;
+    if(head != NULL){
+        head -> prev = new_blk;
+    } 
 
     return new_head;
 }
@@ -466,14 +475,15 @@ void *hl_resize(void *heap, void *block, unsigned int new_size) {
         if((unsigned long)next_block2 < (unsigned long)ADD_BYTES(heap_hd, heap_hd->heap_size)){
             if(!IS_FREE(next_block2 ->block_size)){
                 next_free_size = 0;
-            }else{
-                next_free_size = (unsigned long)(ADD_BYTES(next_block2, next_block2->block_size)
-                    -ADD_BYTES(block_hd, block_size));
+            }else{ // 
+                next_free_size = next_block2->block_size;
             }
         }
 
         unsigned long avai_size = next_free_size + block_size;
+        // check: if the avai_size is big enough to split
         if(avai_size >= new_block_size + calc_needed_size(0)){
+            // retrive next block's footer
             block_footer* next_block_footer1 = (block_footer*)
                 ADD_BYTES(next_block2,next_block2->block_size -sizeof(block_footer));
             // store old pointers 
