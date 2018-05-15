@@ -217,9 +217,6 @@ void *hl_alloc_helper(void *heap, unsigned int block_size) {
     block_header* tgt_blk = find_block (list_head, block_size);
     if (tgt_blk == NULL){ return NULL; }
 
-    //get the pointer pointing to the beginning of the data section
-    void* alloc_block_addr = (void *)ADD_BYTES(tgt_blk, sizeof(block_header) - 2*ALIGNMENT);
-
     //find this block's size
     unsigned long cur_blk_size = tgt_blk -> block_size;
     //find the Minimum block size needed for "block_size"
@@ -289,6 +286,9 @@ void *hl_alloc_helper(void *heap, unsigned int block_size) {
         }
     }
 
+    //Find a pointer to the block of memory (data section) for the return
+    void * alloc_block_addr = ADD_BYTES(tgt_blk, ALIGNMENT);
+
     #ifdef PRINT_DEBUG
         printf("heap starts at addr %p\n", heap);
         printf("alloc_block_addr starts at  %p\n", alloc_block_addr);
@@ -316,18 +316,20 @@ void *hl_alloc(void *heap, unsigned int block_size) {
 
 /* -------------------- hl_release_helper ----------------- */
 void hl_release_helper(void *heap, void *block) {
-
-    // Alignment && retrieve the pointer
-    heap_header* heap_head = (heap_header*)heap;
-    unsigned long heap_head_int = ALIGN(heap_head);
-    unsigned int offs = find_offset(heap_head, heap_head_int);
-    heap_head = (heap_header*) (ADD_BYTES(heap_head, offs));
-
     // check constraint 
     if (block == NULL) return;
 
     // releasing a previous allocaiton -> do nothing
-    if((unsigned long)block == ALIGN(heap)) return; 
+    if((unsigned long)block == ALIGN(heap)) return;
+
+    // retrieve the pointer
+    heap_header* heap_head = (heap_header*)heap;
+
+    // Alignment 
+    unsigned long heap_head_int = ALIGN(heap_head);
+    unsigned int offs = find_offset(heap_head, heap_head_int);
+    heap_head = (heap_header*) (ADD_BYTES(heap_head, offs));
+
 
     block_header* block_free_hd = (block_header *)(ADD_BYTES(block, -ALIGNMENT));
 
