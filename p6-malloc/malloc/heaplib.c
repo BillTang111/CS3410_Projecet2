@@ -314,13 +314,13 @@ void hl_release_helper(void *heap, void *block) {
     //link the freed block back to the list and check freeness
     // check head 
     block_footer* prev_footer = (block_footer*) ADD_BYTES(block_free_hd, -sizeof(block_footer));
-    int is_prev_free = ((unsigned long)prev_footer <= (unsigned long)ADD_BYTES(heap, sizeof(heap_header)))
+    int is_prev_free = ((unsigned long)prev_footer <= (unsigned long)ADD_BYTES(heap_head, sizeof(heap_header)))
         ? 0 : IS_FREE(prev_footer-> block_size);
 
     // check the footer
     block_header* next_header = (block_header*)ADD_BYTES(block_free_hd, (block_free_hd->block_size)); 
-    int is_next_free = ((unsigned long)next_header >= heap_head -> heap_size) 
-         ? 0 : IS_FREE(next_header -> block_size);
+    int is_next_free = ((unsigned long)next_header >= (unsigned long) ADD_BYTES(heap_head,heap_head -> heap_size) 
+         ? 0 : IS_FREE(next_header -> block_size));
 
     //Coalescing blocks if needed (is_x_free = 1): 4 cases
     if (is_prev_free && !is_next_free){
