@@ -400,7 +400,11 @@ void *hl_resize(void *heap, void *block, unsigned int new_size) {
     { // case 2: split the block as hl_alloc did
       //if remainning space is too small to hold block_header and footer -> do nothing
       if(block_size-new_block_size < calc_needed_size(0)){
-          return block;
+         #ifdef PRINT_DEBUG
+        printf("heap_head -> fst_block starts at addr %p\n", heap_hd -> fst_block);
+        printf("result_pt is at  %p\n", result_pt);
+        #endif
+        return block;
       }else{ //if the space is large enough -> split into two blocks
             // store the old size and old pointer to footer
             unsigned long old_size = block_size;
