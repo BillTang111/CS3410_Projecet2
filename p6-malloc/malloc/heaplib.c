@@ -35,6 +35,62 @@ printf("YOU input is: %d \n", a);
 #endif
 }
 
+/* ------------------- HELPER FUNCTIONS ----------------- */
+
+/*  Calculate the size of a block needed */
+unsigned long calc_needed_size (unsigned int payload_size){
+    unsigned long base_size = sizeof(block_header)+sizeof(block_footer);
+    //calculate the required size after aligning (2*ALIGNMENT for *prev and *next)
+    unsigned long needed_size = (unsigned long)(ALIGN(payload_size)+base_size-2*ALIGNMENT);
+    if(needed_size < base_size){
+        needed_size = base_size;
+    }
+    return needed_size;
+}
+
+/*  Finded the first freed block that meets the required payload size*/
+block_header* find_block (block_header* lst_start, unsigned int payload_size){
+    block_header* current_block = lst_start;
+    unsigned long size_needed = calc_needed_size(payload_size);
+
+    while(current_block != NULL){
+        unsigned long current_size = lst_start -> block_size;
+        if (size_needed > current_size){
+            current_block = current_block -> next;
+        }else{
+            return current_block;
+        }
+    }
+    return NULL;
+} 
+
+/* Insert the newly freed block by address order. */
+block_header *insert(block_header *new_blk, block_header *head){
+
+	if(new_blk == NULL) return head;
+	if(head == NULL){
+		new_blk -> prev = NULL;
+		new_blk -> next = NULL;
+		return new_blk;
+	}
+	block_header *new_head = new_blk;
+    new_blk -> next = head;
+    new_blk -> prev = NULL;
+    if(head != NULL){
+        head -> prev = new_blk;
+    } 
+
+    return new_head;
+}
+
+/* Find the offset between two addresses */
+unsigned int find_offset(addr_prt, addr_align_int){
+
+    unsigned int offset = (unsigned int)(addr_align_int - (unsigned long)addr_prt);
+
+    return offset;
+}
+
 /* ------------------- Model Structure  ----------------- */
 
 /* Given the heap header & a block address, finds the block in
@@ -134,65 +190,6 @@ void hl_init(void *heap, unsigned int heap_size) {
     spin_unlock(malloc_lock);
     return;
 }
-
-/* ------------------- HELPER FUNCTIONS ----------------- */
-
-/*  Calculate the size of a block needed */
-unsigned long calc_needed_size (unsigned int payload_size){
-    unsigned long base_size = sizeof(block_header)+sizeof(block_footer);
-    //calculate the required size after aligning (2*ALIGNMENT for *prev and *next)
-    unsigned long needed_size = (unsigned long)(ALIGN(payload_size)+base_size-2*ALIGNMENT);
-    if(needed_size < base_size){
-        needed_size = base_size;
-    }
-    return needed_size;
-}
-
-/*  Finded the first freed block that meets the required payload size*/
-block_header* find_block (block_header* lst_start, unsigned int payload_size){
-    block_header* current_block = lst_start;
-    unsigned long size_needed = calc_needed_size(payload_size);
-
-    while(current_block != NULL){
-        unsigned long current_size = lst_start -> block_size;
-        if (size_needed > current_size){
-            current_block = current_block -> next;
-        }else{
-            return current_block;
-        }
-    }
-    return NULL;
-} 
-
-/* Insert the newly freed block by address order. */
-block_header *insert(block_header *new_blk, block_header *head){
-
-	if(new_blk == NULL) return head;
-	if(head == NULL){
-		new_blk -> prev = NULL;
-		new_blk -> next = NULL;
-		return new_blk;
-	}
-	block_header *new_head = new_blk;
-    new_blk -> next = head;
-    new_blk -> prev = NULL;
-    if(head != NULL){
-        head -> prev = new_blk;
-    } 
-
-    return new_head;
-}
-
-/* Find the offset between two addresses */
-unsigned int find_offset(addr_prt, addr_align_int){
-
-    unsigned int offset = (unsigned int)(addr_align_int - (unsigned long)addr_prt);
-
-    return offset;
-}
-
-
-
 
 /* -------------------- hl_alloc_helper ----------------- */
 void *hl_alloc_helper(void *heap, unsigned int block_size) {
