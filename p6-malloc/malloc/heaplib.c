@@ -316,20 +316,18 @@ void *hl_alloc(void *heap, unsigned int block_size) {
 
 /* -------------------- hl_release_helper ----------------- */
 void hl_release_helper(void *heap, void *block) {
+
+    // Alignment && retrieve the pointer
+    heap_header* heap_head = (heap_header*)heap;
+    unsigned long heap_head_int = ALIGN(heap_head);
+    unsigned int offs = find_offset(heap_head, heap_head_int);
+    heap_head = (heap_header*) (ADD_BYTES(heap_head, offs));
+
     // check constraint 
     if (block == NULL) return;
 
     // releasing a previous allocaiton -> do nothing
     if((unsigned long)block == ALIGN(heap)) return;
-
-    // retrieve the pointer
-    heap_header* heap_head = (heap_header*)heap;
-
-    // Alignment 
-    unsigned long heap_head_int = ALIGN(heap_head);
-    unsigned int offs = find_offset(heap_head, heap_head_int);
-    heap_head = (heap_header*) (ADD_BYTES(heap_head, offs));
-
 
     block_header* block_free_hd = (block_header *)(ADD_BYTES(block, -ALIGNMENT));
 
