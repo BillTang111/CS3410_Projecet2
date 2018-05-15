@@ -375,7 +375,7 @@ void *hl_resize(void *heap, void *block, unsigned int new_size) {
     // check constraints
     if(heap == NULL) return FAILURE;
     if(block == NULL) return hl_alloc(heap, new_size);
-    // resizing the size 0 allocation 
+    // resizing the size 0 allocation that was done previously by resize 
     if(ALIGN(heap)==(unsigned long)block) return hl_alloc(heap, new_size);
 
     if(new_size == 0 ){
@@ -423,12 +423,12 @@ void *hl_resize(void *heap, void *block, unsigned int new_size) {
             new_header -> block_size = old_size - new_block_size;
             old_footer -> block_size = new_header -> block_size;
 
-            // coalesce h
+            // coalesce the freed spaces if there is any
             block_header* next_blk_hd = (block_header*)ADD_BYTES(new_header, new_header->block_size);
             int is_next_free = ((unsigned long)next_blk_hd >= 
                 (unsigned long) ADD_BYTES( heap_hd, heap_hd -> heap_size) ? 0 : IS_FREE(next_blk_hd -> block_size));
             if(is_next_free){ //if next block is free
-                block_footer *new_footer = (block_footer*)ADD_BYTES(new_header,new_header->block_size - sizeof(block_footer));
+                block_footer *new_footer = (block_footer*)ADD_BYTES(next_blk_hd,next_blk_hd->block_size - sizeof(block_footer));
                 unsigned long new_size = (unsigned long)(next_blk_hd -> block_size + new_header -> block_size);
     			new_footer -> block_size = new_size;
     			new_header -> block_size = new_size;
@@ -448,6 +448,7 @@ void *hl_resize(void *heap, void *block, unsigned int new_size) {
             }else{// add the free block to the free block list
                 heap_hd -> fst_block = insert (new_header, heap_hd -> fst_block);
             }
+            // store the result
             result_pt = block;
         }
     }else{ // new size is bigger than old size
