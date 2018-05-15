@@ -36,6 +36,15 @@ printf("YOU input is: %d \n", a);
 }
 
 
+/* ------------------- HELPER FUNCTION ----------------- */
+/* Find the offset between two addresses */
+unsigned int find_offset(addr_prt, addr_align_int){
+
+    unsigned int offset = (unsigned int)(addr_align_int - (unsigned long)addr_prt);
+
+    return offset;
+}
+
 /* ------------------- Model Structure  ----------------- */
 
 /* Given the heap header & a block address, finds the block in
@@ -61,15 +70,6 @@ typedef struct block_footer{
 // unsigned int get_align_offset(void* ptr){
 // 	return (unsigned int)(ALIGN(ptr) - (unsigned long)ptr);
 // }
-
-/* ------------------- HELPER FUNCTION ----------------- */
-/* Find the offset between two addresses */
-unsigned int find_offset(void* addr_prt, unsigned long addr_align_int){
-
-    unsigned int offset = (unsigned int)(addr_align_int - (unsigned long)addr_prt);
-
-    return offset;
-}
 
 /* -------------------- THE BIG FOUR FNS ----------------- */
 /* See the .h for the advertised behavior of this library function.
@@ -327,7 +327,7 @@ void hl_release_helper(void *heap, void *block) {
     if (block == NULL) return;
 
     // releasing a previous allocaiton -> do nothing
-    if((unsigned long)block == ALIGN(heap)) return;
+    if((unsigned long)block == ALIGN(heap)) return; 
 
     block_header* block_free_hd = (block_header *)(ADD_BYTES(block, -ALIGNMENT));
 
