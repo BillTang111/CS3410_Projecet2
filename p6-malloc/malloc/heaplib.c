@@ -308,7 +308,7 @@ void hl_release_helper(void *heap, void *block) {
     block_free_hd -> block_size = (block_free_hd -> block_size) & ~(1);
 
     block_footer* block_free_ft = (block_footer *)
-        (ADD_BYTES(block, (block_free_hd -> block_size)-sizeof(block_footer)));
+        (ADD_BYTES(block_free_hd, (block_free_hd -> block_size)-sizeof(block_footer)));
     block_free_ft -> block_size = block_free_hd -> block_size;
 
     //link the freed block back to the list and check freeness
