@@ -71,13 +71,22 @@ unsigned int get_align_offset(void* ptr){
  */
 /* -------------------- hl_init ----------------- */
 void hl_init(void *heap, unsigned int heap_size) {
+    // Lock for this thread
+    spin_lock(malloc_lock);
+
     //check the constraints 
     if(!heap){
         printf("Ahh, your input heap is wrong \n");
+
+        // Unlock for this thread
+        spin_unlock(malloc_lock);
         return;
         }
     if(heap_size < MIN_HEAP_SIZE || !heap){
         printf("Ahh, your input heap_size is wrong \n");
+
+        // Unlock for this thread
+        spin_unlock(malloc_lock);
         return;
     }
 
@@ -117,6 +126,8 @@ void hl_init(void *heap, unsigned int heap_size) {
         printf("fst_blk_footer is  %p\n", fst_blk_footer);
     #endif
 
+    // Unlock for this thread
+    spin_unlock(malloc_lock);
     return;
 }
 
@@ -168,8 +179,8 @@ block_header *insert(block_header *new_blk, block_header *head){
     return new_head;
 }
 
-/* -------------------- hl_alloc ----------------- */
-void *hl_alloc(void *heap, unsigned int block_size) {
+/* -------------------- hl_alloc_helper ----------------- */
+void *hl_alloc_helper(void *heap, unsigned int block_size) {
 
     //check constraints
     if(block_size == 0){ 
@@ -265,8 +276,24 @@ void *hl_alloc(void *heap, unsigned int block_size) {
     return alloc_block_addr;
 }
 
-/* -------------------- hl_release ----------------- */
-void hl_release(void *heap, void *block) {
+
+/* -------------------- hl_alloc ----------------- */
+
+void *hl_alloc(void *heap, unsigned int block_size) {
+    // Lock for this thread
+    spin_lock(malloc_lock);
+    
+
+    void* result = hl_alloc_helper(heap, block_size)
+
+    // Unlock for this thread
+    spin_unlock(malloc_lock);
+
+    return result;
+}
+
+/* -------------------- hl_release_helper ----------------- */
+void hl_release_helper(void *heap, void *block) {
     // check constraint 
     if (block == NULL) return;
 
@@ -385,16 +412,52 @@ void hl_release(void *heap, void *block) {
 
 }
 
+
+/* -------------------- hl_release ----------------- */
+void hl_release(void *heap, void *block) {
+    // Lock for this thread
+    spin_lock(malloc_lock);
+    
+
+    hl_release_helper(heap, block)
+
+    // Unlock for this thread
+    spin_unlock(malloc_lock);
+}
+
+
 /* -------------------- hl_resize ----------------- */
 void *hl_resize(void *heap, void *block, unsigned int new_size) {
+    // Lock for this thread
+    spin_lock(malloc_lock);
+
+
     // check constraints
-    if(heap == NULL) return FAILURE;
-    if(block == NULL) return hl_alloc(heap, new_size);
+    if(heap == NULL) {
+        // Unlock for this thread
+        spin_unlock(malloc_lock);
+        return FAILURE;
+    }
+    if(block == NULL) {
+        void* result = hl_alloc_helper(heap, new_size);
+
+        // Unlock for this thread
+        spin_unlock(malloc_lock);
+        return result;
+    }
     // resizing the size 0 allocation that was done previously by resize 
-    if(ALIGN(heap)==(unsigned long)block) return hl_alloc(heap, new_size);
+    if(ALIGN(heap)==(unsigned long)block) {
+        void* result = hl_alloc_helper(heap, new_size);
+
+        // Unlock for this thread
+        spin_unlock(malloc_lock);
+        return result;
+    }
 
     if(new_size == 0 ){
-        hl_release(heap,block);
+        hl_release_helper(heap,block);
+        // Unlock for this thread
+        spin_unlock(malloc_lock);
         return (void*)ALIGN(heap);
     }
 
@@ -410,11 +473,17 @@ void *hl_resize(void *heap, void *block, unsigned int new_size) {
 
     // starting resize procedure
     // case 1
-    if(new_block_size == block_size) {return block;
-    }else if(new_block_size < block_size) 
+    if(new_block_size == block_size) {
+        // Unlock for this thread
+        spin_unlock(malloc_lock);
+        return block;
+    }
+    else if(new_block_size < block_size) 
     { // case 2: split the block as hl_alloc did
       //if remainning space is too small to hold block_header and footer -> do nothing
       if(block_size-new_block_size < calc_needed_size(0)){
+        // Unlock for this thread
+        spin_unlock(malloc_lock);
         return block;
       }else{ //if the space is large enough -> split into two blocks
             // store the old size and old pointer to footer
@@ -553,11 +622,14 @@ void *hl_resize(void *heap, void *block, unsigned int new_size) {
             // return the new pointer for allocated block
             void* new_pt = block;
             if(block_size + next_free_size + pre_block_size >= new_block_size){
-                hl_release(heap_hd, block);
-                new_pt = hl_alloc(heap_hd, new_size);
+                hl_release_helper(heap_hd, block);
+                new_pt = hl_alloc_helper(heap_hd, new_size);
             }else{
-                new_pt= hl_alloc(heap_hd,new_size);
+                new_pt= hl_alloc_helper(heap_hd,new_size);
                 if(new_pt==NULL){
+
+                    // Unlock for this thread
+                    spin_unlock(malloc_lock);
                     return FAILURE;
                 }
             }
@@ -573,5 +645,7 @@ void *hl_resize(void *heap, void *block, unsigned int new_size) {
         printf("result_pt is at  %p\n", result_pt);
     #endif
 
+    // Unlock for this thread
+    spin_unlock(malloc_lock);
     return result_pt;
 }
