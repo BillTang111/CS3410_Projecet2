@@ -56,10 +56,10 @@ typedef struct block_footer{
     unsigned long block_size; //size of block (addre is 8-byte alligned)
 } block_footer;
 
-// /* Given an unaligned pointer, how much offset do we need to make it aligned*/
-// unsigned int get_align_offset(void* ptr){
-// 	return (unsigned int)(ALIGN(ptr) - (unsigned long)ptr);
-// }
+/* Given an unaligned pointer, how much offset do we need to make it aligned*/
+unsigned int get_align_offset(void* ptr){
+	return (unsigned int)(ALIGN(ptr) - (unsigned long)ptr);
+}
 
 /* -------------------- THE BIG FOUR FNS ----------------- */
 /* See the .h for the advertised behavior of this library function.
@@ -95,10 +95,10 @@ void hl_init(void *heap, unsigned int heap_size) {
     heap_head -> heap_size = heap_size;
 
     //calc the first block starting point after the heap_header
-    void* fst_blk_unAlign = ADD_BYTES(heap_head, sizeof(heap_header));
-    unsigned int offset = (unsigned int)(ALIGN(fst_blk_unAlign) - (unsigned long)fst_blk_unAlign);
+    // void* fst_blk_unAlign = ADD_BYTES(heap_head, sizeof(heap_header));
+    // unsigned int offset = (unsigned int)(ALIGN(fst_blk_unAlign) - (unsigned long)fst_blk_unAlign);
 
-    // unsigned int offset = get_align_offset(ADD_BYTES(heap_head, sizeof(heap_header) + sizeof(block_header)));
+    unsigned int offset = get_align_offset(ADD_BYTES(heap_head, sizeof(heap_header) + sizeof(block_header)));
 
     block_header* fst_blk_Align = (block_header *)(ADD_BYTES(heap_head, sizeof(heap_header) + offset));
     heap_head -> fst_block = (block_header*)fst_blk_Align;
