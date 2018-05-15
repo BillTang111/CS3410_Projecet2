@@ -8,7 +8,7 @@ int main(){
     // add_byte(4);
 
     print_daaaaa(20);  
-    print_ooooo(13);
+    print_ooooo(14);
     printf("\n This is the start !!!!!  \n");
 
     char heap[1240];
@@ -26,6 +26,8 @@ int main(){
     // unsigned int mask = ~(1);
 
     // printf("this is bit test: %u \n", mask);
-    
+    printf("\n hl_resize +++ \n");
+    void* resiz = hl_resize(heap, alloc, 500);
+
     return 0;
 } 
