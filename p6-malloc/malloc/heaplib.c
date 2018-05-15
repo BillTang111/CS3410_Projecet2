@@ -92,7 +92,10 @@ void hl_init(void *heap, unsigned int heap_size) {
 
     // start setting up the heap
     heap_header* heap_head = (heap_header*) heap;
-    heap_head = ALIGN(heap_head);
+    // Alignment 
+    unsigned long heap_head_int = ALIGN(heap_head);
+    unsigned int offs = find_offset(heap_head, heap_head_int);
+    heap_head = (heap_header*) (ADD_BYTES(heap_head, offs));
     heap_head -> heap_size = heap_size;
 
     //calc the first block starting point after the heap_header
@@ -180,6 +183,17 @@ block_header *insert(block_header *new_blk, block_header *head){
     return new_head;
 }
 
+/* Find the offset between two addresses */
+unsigned int find_offset(addr_prt, addr_align_int){
+
+    unsigned int offset = (unsigned int)(addr_align_int - (unsigned long)addr_prt);
+
+    return offset;
+}
+
+
+
+
 /* -------------------- hl_alloc_helper ----------------- */
 void *hl_alloc_helper(void *heap, unsigned int block_size) {
 
@@ -190,7 +204,12 @@ void *hl_alloc_helper(void *heap, unsigned int block_size) {
 
     //locate the first block from heap
     heap_header* heap_head = (heap_header*) heap;
-    heap_head = ALIGN(heap_head);
+
+    // Alignment 
+    unsigned long heap_head_int = ALIGN(heap_head);
+    unsigned int offs = find_offset(heap_head, heap_head_int);
+    heap_head = (heap_header*) (ADD_BYTES(heap_head, offs));
+
     block_header* list_head = heap_head -> fst_block;
 
     //find available block address meeting our "block_size"
@@ -304,7 +323,13 @@ void hl_release_helper(void *heap, void *block) {
 
     // retrieve the pointer
     heap_header* heap_head = (heap_header*)heap;
-    heap_head = ALIGN(heap_head);
+
+    // Alignment 
+    unsigned long heap_head_int = ALIGN(heap_head);
+    unsigned int offs = find_offset(heap_head, heap_head_int);
+    heap_head = (heap_header*) (ADD_BYTES(heap_head, offs));
+
+
     block_header* block_free_hd = (block_header *)(ADD_BYTES(block, -ALIGNMENT));
 
     // indicating the block is freed (update the last bit)
@@ -463,8 +488,12 @@ void *hl_resize(void *heap, void *block, unsigned int new_size) {
 
     // acquire pointers
     block_header* block_hd = (block_header*)(ADD_BYTES(block,-sizeof(block_header)+2*ALIGNMENT));
-    heap_header* heap_hd = (heap_header*) heap;
-    heap_hd = ALIGN(heap_hd);
+
+    // Alignment 
+    unsigned long heap_head_int = ALIGN(block_hd);
+    unsigned int offs = find_offset(block_hd, heap_head_int);
+    block_hd = (heap_header*) (ADD_BYTES(block_hd, offs));
+
     void* result_pt = block; 
 
     // get the minimum block size for the current block
