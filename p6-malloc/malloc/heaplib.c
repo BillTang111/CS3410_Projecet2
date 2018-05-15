@@ -92,7 +92,7 @@ void hl_init(void *heap, unsigned int heap_size) {
 
     // start setting up the heap
     heap_header* heap_head = (heap_header*) heap;
-    heap_header* heap_head = ALIGN(heap_head);
+    heap_head = ALIGN(heap_head);
     heap_head -> heap_size = heap_size;
 
     //calc the first block starting point after the heap_header
@@ -190,7 +190,7 @@ void *hl_alloc_helper(void *heap, unsigned int block_size) {
 
     //locate the first block from heap
     heap_header* heap_head = (heap_header*) heap;
-    heap_header* heap_head = ALIGN(heap_head);
+    heap_head = ALIGN(heap_head);
     block_header* list_head = heap_head -> fst_block;
 
     //find available block address meeting our "block_size"
@@ -304,7 +304,7 @@ void hl_release_helper(void *heap, void *block) {
 
     // retrieve the pointer
     heap_header* heap_head = (heap_header*)heap;
-    heap_header* heap_head = ALIGN(heap_head);
+    heap_head = ALIGN(heap_head);
     block_header* block_free_hd = (block_header *)(ADD_BYTES(block, -ALIGNMENT));
 
     // indicating the block is freed (update the last bit)
@@ -464,7 +464,7 @@ void *hl_resize(void *heap, void *block, unsigned int new_size) {
     // acquire pointers
     block_header* block_hd = (block_header*)(ADD_BYTES(block,-sizeof(block_header)+2*ALIGNMENT));
     heap_header* heap_hd = (heap_header*) heap;
-    heap_header* heap_hd = ALIGN(heap_hd);
+    heap_hd = ALIGN(heap_hd);
     void* result_pt = block; 
 
     // get the minimum block size for the current block
