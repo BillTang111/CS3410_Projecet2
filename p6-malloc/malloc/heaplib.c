@@ -68,6 +68,10 @@ typedef struct block_footer{
 /* -------------------- hl_init ----------------- */
 void hl_init(void *heap, unsigned int heap_size) {
     //check the constraints 
+    if(!heap){
+        printf("Ahh, your input heap is wrong \n");
+        return;
+        }
     if(heap_size < MIN_HEAP_SIZE || !heap){
         printf("Ahh, your input heap_size is wrong \n");
         return;
@@ -159,7 +163,9 @@ block_header *insert(block_header *new_blk, block_header *head){
 void *hl_alloc(void *heap, unsigned int block_size) {
 
     //check constraints
-    if(block_size == 0){ return heap; }
+    if(block_size == 0){ 
+        return (void *)ALIGN(heap);
+    }
 
     //locate the first block from heap
     heap_header* heap_head = (heap_header*) heap;
