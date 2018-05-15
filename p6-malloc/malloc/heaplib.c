@@ -490,10 +490,14 @@ void *hl_resize(void *heap, void *block, unsigned int new_size) {
     // acquire pointers
     block_header* block_hd = (block_header*)(ADD_BYTES(block,-sizeof(block_header)+2*ALIGNMENT));
 
+
+    //locate the first block from heap
+    heap_header* heap_hd = (heap_header*) heap;
+
     // Alignment 
-    unsigned long heap_head_int = ALIGN(block_hd);
-    unsigned int offs = find_offset(block_hd, heap_head_int);
-    block_hd = (heap_header*) (ADD_BYTES(block_hd, offs));
+    unsigned long heap_head_int = ALIGN(heap_hd);
+    unsigned int offs = find_offset(heap_hd, heap_head_int);
+    heap_hd = (heap_header*) (ADD_BYTES(heap_hd, offs));
 
     void* result_pt = block; 
 
